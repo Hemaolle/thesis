@@ -10,8 +10,8 @@ import ec.*;
 import ec.gp.*;
 import ec.gp.koza.*;
 import ec.simple.*;
-import test.TestPotentialFunctionProviderStarter;
 import thesis.rmi.PotentialFunctionProvider;
+import thesis.rmi.ThesisProblemRMI;
 import thesis.rmi.RemoteBotInterface;
 
 /**
@@ -40,16 +40,15 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	public double currentX;
 	/** The broodwar clients used in evaluation */
 	ArrayList<RemoteBotInterface> bwClients;
-	
+
 	// Information regarding the current individual
 	EvolutionState state;
 	int threadnum;
 	Individual ind;
-	DoubleData localInput;	
-	
+	DoubleData localInput;
+
 	int repeatedEvaluations; // How many times a single individual should be
 								// evaluated?
-	
 
 	/**
 	 * Setup the evolution. Read how many times an individual should be
@@ -73,7 +72,7 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 		bwClients = new ArrayList<RemoteBotInterface>();
 		System.out.println(state.evalthreads + " evalthreads");
 
-		TestPotentialFunctionProviderStarter starter = new TestPotentialFunctionProviderStarter();
+		ThesisProblemRMI starter = new ThesisProblemRMI();
 
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(
 				System.in));
@@ -123,6 +122,9 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 				e.printStackTrace();
 				throw new Error();
 			}
+
+			// TODO: Calculating some standard fitness value should probably be
+			// done on the Controller side.
 			fitness -= 180;
 			fitness *= -1;
 
@@ -139,9 +141,8 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	}
 
 	/**
-	 * Returns the potential for the enemy. This part of the potential
-	 * function is evolved in tree 0.
-	 * 0.
+	 * Returns the potential for the enemy. This part of the potential function
+	 * is evolved in tree 0. 0.
 	 * 
 	 * TODO: modify to use multiple enemies.
 	 * 

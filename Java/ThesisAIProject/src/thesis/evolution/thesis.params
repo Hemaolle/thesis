@@ -32,7 +32,7 @@ eval.problem = thesis.evolution.ThesisProblem
 eval.problem.data = thesis.evolution.DoubleData
 # How many times evaluation of an individual should be repeated
 # Using the average fitness.
-eval.problem.repeated-evaluations = 4
+eval.problem.repeated-evaluations = 10
 
 # omat lisäykset
 pop.subpop.0.size =			32
