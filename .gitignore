@@ -1,0 +1,18 @@
+# The javadoc. Can be generated with eclipse.
+Source/Java/ThesisAIProject/doc
+
+# The out.stat evolution results file
+out.stat
+
+# BWTA files
+*.jbwta
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+x64/
+build/
+bld/
+[Bb]in/
+[Oo]bj/

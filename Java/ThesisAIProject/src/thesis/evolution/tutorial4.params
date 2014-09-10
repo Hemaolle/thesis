@@ -1,0 +1,58 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = E:/Tiedostot/Workspace/OneDrive/Gradu/3rd party libraries/ecj/params/ec/gp/koza/koza.params
+
+# the next four items are already defined in koza.params, but we
+# put them here to be clear.
+
+# We have one function set, of class GPFunctionSet
+gp.fs.size = 1
+gp.fs.0 = ec.gp.GPFunctionSet
+# We'll call the function set "f0".
+gp.fs.0.name = f0
+
+# We have six functions in the function set.  They are:
+gp.fs.0.size = 6
+gp.fs.0.func.0 = thesis.evolution.X
+gp.fs.0.func.0.nc = nc0
+gp.fs.0.func.1 = thesis.evolution.Add
+gp.fs.0.func.1.nc = nc2
+gp.fs.0.func.2 = thesis.evolution.Sub
+gp.fs.0.func.2.nc = nc2
+gp.fs.0.func.3 = thesis.evolution.Mul
+gp.fs.0.func.3.nc = nc2
+gp.fs.0.func.4 = thesis.evolution.Div
+gp.fs.0.func.4.nc = nc2
+gp.fs.0.func.5 = thesis.evolution.FloatERC
+gp.fs.0.func.5.nc = nc0
+
+eval.problem = thesis.evolution.ThesisProblem
+eval.problem.data = thesis.evolution.DoubleData
+# How many times evaluation of an individual should be repeated
+# Using the average fitness.
+eval.problem.repeated-evaluations = 4
+
+# omat lisäykset
+pop.subpop.0.size =			32
+generations =				26
+print-params = true
+
+#evalthreads = 1
+ evalthreads = 8
+ 
+seed.0 = time
+seed.1 = time
+seed.2 = time
+seed.3 = time
+seed.4 = time
+seed.5 = time
+seed.6 = time
+seed.7 = time
+
+pop.subpop.0.species.ind.numtrees = 2
+pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.0.tc = tc0
+pop.subpop.0.species.ind.tree.1 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.1.tc = tc0

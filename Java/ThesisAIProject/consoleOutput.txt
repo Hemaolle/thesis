@@ -1,0 +1,511 @@
+	 P: print-params = true
+	!P: current-job
+	!P: jobs
+	!E: muzzle
+	!E: muzzle
+	!P: silent
+	!P: muzzle
+
+| ECJ
+| An evolutionary computation system (version 21)
+| By Sean Luke
+| Contributors: L. Panait, G. Balan, S. Paus, Z. Skolicki, R. Kicinger,
+|               E. Popovici, K. Sullivan, J. Harrison, J. Bassett, R. Hubley,
+|               A. Desai, A. Chircop, J. Compton, W. Haddon, S. Donnelly,
+|               B. Jamil, J. Zelibor, E. Kangas, F. Abidi, H. Mooers,
+|               J. O'Beirne, L. Manzoni, K. Talukder, and J. McDermott
+| URL: http://cs.gmu.edu/~eclab/projects/ecj/
+| Mail: ecj-help@cs.gmu.edu
+|       (better: join ECJ-INTEREST at URL above)
+| Date: May 1, 2013
+| Current Java: 1.7.0_51 / Java HotSpot(TM) Client VM-24.51-b03
+| Required Minimum Java: 1.5
+
+
+	 P: breedthreads = 1
+	 P: breedthreads = 1
+	 P: evalthreads = 1
+	 P: evalthreads = 1
+	 P: breedthreads = 1
+	 P: evalthreads = 1
+	 P: seed.0 = time
+	 P: state = ec.simple.SimpleEvolutionState
+Threads:  breed/1 eval/1
+Seed: -65993722 
+Job: 0
+Setting up
+	 P: checkpoint = false
+	 P: checkpoint-prefix = ec
+	!P: prefix
+	 P: checkpoint-modulo = 1
+	!E: checkpoint-directory
+	!E: checkpoint-directory
+	!E: evaluations
+	!E: evaluations
+	 E: generations = 26
+	 E: generations = 26
+	 P: generations = 26
+	 P: quit-on-run-complete = true
+	 P: init = ec.gp.GPInitializer
+Processing GP Types
+	 P: gp.type.a.size = 1
+	 P: gp.type.a.0.name = nil
+	 E: gp.type.s.size = 0
+	 E: gp.type.s.size = 0
+	 P: gp.type.s.size = 0
+Processing GP Node Constraints
+	 P: gp.nc.size = 7
+	 E: gp.nc.0 = ec.gp.GPNodeConstraints
+	 E: gp.nc.0 = ec.gp.GPNodeConstraints
+	 P: gp.nc.0 = ec.gp.GPNodeConstraints
+	 P: gp.nc.0.name = nc0
+	 P: gp.nc.0.returns = nil
+	!E: gp.nc.0.prob
+	!E: gp.nc.0.prob
+	 P: gp.nc.0.size = 0
+	 E: gp.nc.1 = ec.gp.GPNodeConstraints
+	 E: gp.nc.1 = ec.gp.GPNodeConstraints
+	 P: gp.nc.1 = ec.gp.GPNodeConstraints
+	 P: gp.nc.1.name = nc1
+	 P: gp.nc.1.returns = nil
+	!E: gp.nc.1.prob
+	!E: gp.nc.1.prob
+	 P: gp.nc.1.size = 1
+	 P: gp.nc.1.child.0 = nil
+	 E: gp.nc.2 = ec.gp.GPNodeConstraints
+	 E: gp.nc.2 = ec.gp.GPNodeConstraints
+	 P: gp.nc.2 = ec.gp.GPNodeConstraints
+	 P: gp.nc.2.name = nc2
+	 P: gp.nc.2.returns = nil
+	!E: gp.nc.2.prob
+	!E: gp.nc.2.prob
+	 P: gp.nc.2.size = 2
+	 P: gp.nc.2.child.0 = nil
+	 P: gp.nc.2.child.1 = nil
+	 E: gp.nc.3 = ec.gp.GPNodeConstraints
+	 E: gp.nc.3 = ec.gp.GPNodeConstraints
+	 P: gp.nc.3 = ec.gp.GPNodeConstraints
+	 P: gp.nc.3.name = nc3
+	 P: gp.nc.3.returns = nil
+	!E: gp.nc.3.prob
+	!E: gp.nc.3.prob
+	 P: gp.nc.3.size = 3
+	 P: gp.nc.3.child.0 = nil
+	 P: gp.nc.3.child.1 = nil
+	 P: gp.nc.3.child.2 = nil
+	 E: gp.nc.4 = ec.gp.GPNodeConstraints
+	 E: gp.nc.4 = ec.gp.GPNodeConstraints
+	 P: gp.nc.4 = ec.gp.GPNodeConstraints
+	 P: gp.nc.4.name = nc4
+	 P: gp.nc.4.returns = nil
+	!E: gp.nc.4.prob
+	!E: gp.nc.4.prob
+	 P: gp.nc.4.size = 4
+	 P: gp.nc.4.child.0 = nil
+	 P: gp.nc.4.child.1 = nil
+	 P: gp.nc.4.child.2 = nil
+	 P: gp.nc.4.child.3 = nil
+	 E: gp.nc.5 = ec.gp.GPNodeConstraints
+	 E: gp.nc.5 = ec.gp.GPNodeConstraints
+	 P: gp.nc.5 = ec.gp.GPNodeConstraints
+	 P: gp.nc.5.name = nc5
+	 P: gp.nc.5.returns = nil
+	!E: gp.nc.5.prob
+	!E: gp.nc.5.prob
+	 P: gp.nc.5.size = 5
+	 P: gp.nc.5.child.0 = nil
+	 P: gp.nc.5.child.1 = nil
+	 P: gp.nc.5.child.2 = nil
+	 P: gp.nc.5.child.3 = nil
+	 P: gp.nc.5.child.4 = nil
+	 E: gp.nc.6 = ec.gp.GPNodeConstraints
+	 E: gp.nc.6 = ec.gp.GPNodeConstraints
+	 P: gp.nc.6 = ec.gp.GPNodeConstraints
+	 P: gp.nc.6.name = nc6
+	 P: gp.nc.6.returns = nil
+	!E: gp.nc.6.prob
+	!E: gp.nc.6.prob
+	 P: gp.nc.6.size = 6
+	 P: gp.nc.6.child.0 = nil
+	 P: gp.nc.6.child.1 = nil
+	 P: gp.nc.6.child.2 = nil
+	 P: gp.nc.6.child.3 = nil
+	 P: gp.nc.6.child.4 = nil
+	 P: gp.nc.6.child.5 = nil
+Processing GP Function Sets
+	 P: gp.fs.size = 1
+	 E: gp.fs.0 = ec.gp.GPFunctionSet
+	 E: gp.fs.0 = ec.gp.GPFunctionSet
+	 P: gp.fs.0 = ec.gp.GPFunctionSet
+	 P: gp.fs.0.name = f0
+	 P: gp.fs.0.size = 4
+	 P: gp.fs.0.func.0 = thesis.evolution.X
+	 P: gp.fs.0.func.0.nc = nc0
+	<P: gp.node.nc
+	 P: gp.fs.0.func.1 = thesis.evolution.Add
+	 P: gp.fs.0.func.1.nc = nc2
+	<P: gp.node.nc
+	 P: gp.fs.0.func.2 = thesis.evolution.Sub
+	 P: gp.fs.0.func.2.nc = nc2
+	<P: gp.node.nc
+	 P: gp.fs.0.func.3 = thesis.evolution.Mul
+	 P: gp.fs.0.func.3.nc = nc2
+	<P: gp.node.nc
+Processing GP Tree Constraints
+	 P: gp.tc.size = 1
+	 E: gp.tc.0 = ec.gp.GPTreeConstraints
+	 E: gp.tc.0 = ec.gp.GPTreeConstraints
+	 P: gp.tc.0 = ec.gp.GPTreeConstraints
+	 P: gp.tc.0.name = tc0
+	 P: gp.tc.0.init = ec.gp.koza.HalfBuilder
+	!E: gp.tc.0.init.min-size
+	!E: gp.koza.half.min-size
+	!E: gp.tc.0.init.min-size
+	!E: gp.koza.half.min-size
+	!E: gp.tc.0.init.max-size
+	!E: gp.koza.half.max-size
+	!E: gp.tc.0.init.max-size
+	!E: gp.koza.half.max-size
+	!E: gp.tc.0.init.num-sizes
+	!E: gp.koza.half.num-sizes
+	!E: gp.tc.0.init.num-sizes
+	!E: gp.koza.half.num-sizes
+	!P: gp.tc.0.init.max-depth
+	 P: gp.koza.half.max-depth = 6
+	!P: gp.tc.0.init.min-depth
+	 P: gp.koza.half.min-depth = 2
+	!P: gp.tc.0.init.growp
+	 P: gp.koza.half.growp = 0.5
+	 P: gp.tc.0.returns = nil
+	 P: gp.tc.0.fset = f0
+	 P: finish = ec.simple.SimpleFinisher
+	 P: breed = ec.simple.SimpleBreeder
+	 P: pop.subpops = 1
+	!P: breed.sequential
+	!P: breed.clone-pipeline-and-population
+	!P: pop.default-subpop
+	!E: breed.elite.0
+	!E: breed.elite.0
+	!E: breed.elite-fraction.0
+	!E: breed.elite-fraction.0
+	!P: breed.reevaluate-elites.0
+	 P: eval = ec.simple.SimpleEvaluator
+	 P: eval.problem = thesis.evolution.RTSSmallScaleCombatProblem
+	!P: eval.problem.stack
+	 P: gp.problem.stack = ec.gp.ADFStack
+	!P: eval.problem.stack.context
+	 P: gp.adf-stack.context = ec.gp.ADFContext
+	 P: eval.problem.data = thesis.evolution.DoubleData
+	<P: gp.problem.data
+Loaded client bridge library.
+	!E: eval.masterproblem
+	!E: eval.masterproblem
+	!P: eval.clone-problem
+	!P: eval.num-tests
+	!E: eval.chunk-size
+	!E: eval.chunk-size
+	 P: stat = ec.simple.SimpleStatistics
+	!P: stat.num-children
+	!P: stat.silent
+	!P: stat.silent.file
+	!P: stat.silent.print
+	!E: stat.muzzle
+	!E: stat.muzzle
+	!P: stat.muzzle
+	!P: stat.gzip
+	 P: stat.file = $out.stat
+	!P: stat.do-final
+	!P: stat.do-generation
+	!P: stat.do-message
+	!P: stat.do-description
+	!P: stat.do-per-generation-description
+	 P: exch = ec.simple.SimpleExchanger
+Initializing Generation 0
+	 P: pop = ec.Population
+	!E: pop.file
+	!E: pop.file
+	 P: pop.subpops = 1
+	 E: pop.subpop.0 = ec.Subpopulation
+	 E: pop.subpop.0 = ec.Subpopulation
+	 P: pop.subpop.0 = ec.Subpopulation
+	!E: pop.subpop.0.file
+	!E: pop.subpop.0.file
+	 P: pop.subpop.0.species = ec.gp.GPSpecies
+	<P: ec.subpop.species
+	 P: pop.subpop.0.species.pipe = ec.breed.MultiBreedingPipeline
+	<P: gp.species.pipe
+	!E: pop.subpop.0.species.pipe.prob
+	!E: breed.multibreed.prob
+	!E: pop.subpop.0.species.pipe.prob
+	!E: breed.multibreed.prob
+	!P: pop.subpop.0.species.pipe.likelihood
+	!P: breed.multibreed.likelihood
+	 P: pop.subpop.0.species.pipe.num-sources = 2
+	<P: breed.multibreed.num-sources
+	 P: pop.subpop.0.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+	<P: breed.multibreed.source.0
+	 P: pop.subpop.0.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+	<P: breed.multibreed.source.0
+	 E: pop.subpop.0.species.pipe.source.0.prob = 0.9
+	<E: gp.koza.xover.prob
+	 E: pop.subpop.0.species.pipe.source.0.prob = 0.9
+	 P: pop.subpop.0.species.pipe.source.0.prob = 0.9
+	<P: gp.koza.xover.prob
+	!P: pop.subpop.0.species.pipe.source.0.likelihood
+	!P: gp.koza.xover.likelihood
+	!P: pop.subpop.0.species.pipe.source.0.source.0
+	 P: gp.koza.xover.source.0 = ec.select.TournamentSelection
+	!P: pop.subpop.0.species.pipe.source.0.source.0
+	 P: gp.koza.xover.source.0 = ec.select.TournamentSelection
+	!E: pop.subpop.0.species.pipe.source.0.source.0.prob
+	!E: select.tournament.prob
+	!E: pop.subpop.0.species.pipe.source.0.source.0.prob
+	!E: select.tournament.prob
+	!P: pop.subpop.0.species.pipe.source.0.source.0.size
+	 P: select.tournament.size = 7
+	!P: pop.subpop.0.species.pipe.source.0.source.0.pick-worst
+	!P: select.tournament.pick-worst
+	!P: pop.subpop.0.species.pipe.source.0.source.1
+	 P: gp.koza.xover.source.1 = same
+	!P: pop.subpop.0.species.pipe.source.0.ns.0
+	 P: gp.koza.xover.ns.0 = ec.gp.koza.KozaNodeSelector
+	!P: pop.subpop.0.species.pipe.source.0.ns.0.terminals
+	 P: gp.koza.ns.terminals = 0.1
+	!P: pop.subpop.0.species.pipe.source.0.ns.0.nonterminals
+	 P: gp.koza.ns.nonterminals = 0.9
+	!P: pop.subpop.0.species.pipe.source.0.ns.0.root
+	 P: gp.koza.ns.root = 0.0
+	!E: pop.subpop.0.species.pipe.source.0.ns.1
+	 E: gp.koza.xover.ns.1 = same
+	!E: pop.subpop.0.species.pipe.source.0.ns.1
+	 E: gp.koza.xover.ns.1 = same
+	!P: pop.subpop.0.species.pipe.source.0.ns.1
+	 P: gp.koza.xover.ns.1 = same
+	!P: pop.subpop.0.species.pipe.source.0.tries
+	 P: gp.koza.xover.tries = 1
+	!P: pop.subpop.0.species.pipe.source.0.maxdepth
+	 P: gp.koza.xover.maxdepth = 17
+	!E: pop.subpop.0.species.pipe.source.0.maxsize
+	!E: gp.koza.xover.maxsize
+	!E: pop.subpop.0.species.pipe.source.0.maxsize
+	!E: gp.koza.xover.maxsize
+	!E: pop.subpop.0.species.pipe.source.0.tree.0
+	!E: gp.koza.xover.tree.0
+	!E: pop.subpop.0.species.pipe.source.0.tree.0
+	!E: gp.koza.xover.tree.0
+	!E: pop.subpop.0.species.pipe.source.0.tree.1
+	!E: gp.koza.xover.tree.1
+	!E: pop.subpop.0.species.pipe.source.0.tree.1
+	!E: gp.koza.xover.tree.1
+	!P: pop.subpop.0.species.pipe.source.0.toss
+	!P: gp.koza.xover.toss
+	 P: pop.subpop.0.species.pipe.source.1 = ec.breed.ReproductionPipeline
+	<P: breed.multibreed.source.1
+	 P: pop.subpop.0.species.pipe.source.1 = ec.breed.ReproductionPipeline
+	<P: breed.multibreed.source.1
+	 E: pop.subpop.0.species.pipe.source.1.prob = 0.1
+	<E: breed.reproduce.prob
+	 E: pop.subpop.0.species.pipe.source.1.prob = 0.1
+	 P: pop.subpop.0.species.pipe.source.1.prob = 0.1
+	<P: breed.reproduce.prob
+	!P: pop.subpop.0.species.pipe.source.1.likelihood
+	!P: breed.reproduce.likelihood
+	!P: pop.subpop.0.species.pipe.source.1.source.0
+	 P: breed.reproduce.source.0 = ec.select.TournamentSelection
+	!P: pop.subpop.0.species.pipe.source.1.source.0
+	 P: breed.reproduce.source.0 = ec.select.TournamentSelection
+	!E: pop.subpop.0.species.pipe.source.1.source.0.prob
+	!E: select.tournament.prob
+	!E: pop.subpop.0.species.pipe.source.1.source.0.prob
+	!E: select.tournament.prob
+	!P: pop.subpop.0.species.pipe.source.1.source.0.size
+	 P: select.tournament.size = 7
+	!P: pop.subpop.0.species.pipe.source.1.source.0.pick-worst
+	!P: select.tournament.pick-worst
+	!P: pop.subpop.0.species.pipe.source.1.must-clone
+	!P: breed.reproduce.must-clone
+	 P: pop.subpop.0.species.pipe.generate-max = false
+	<P: breed.multibreed.generate-max
+	 P: pop.subpop.0.species.ind = ec.gp.GPIndividual
+	<P: gp.species.ind
+	 P: pop.subpop.0.species.ind.numtrees = 1
+	<P: gp.individual.numtrees
+	 P: pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
+	<P: gp.individual.tree.0
+	!E: pop.subpop.0.species.ind.tree.0.graphviz
+	!E: gp.tree.graphviz
+	!E: pop.subpop.0.species.ind.tree.0.graphviz
+	!E: gp.tree.graphviz
+	!E: pop.subpop.0.species.ind.tree.0.latex
+	!E: gp.tree.latex
+	!E: pop.subpop.0.species.ind.tree.0.latex
+	!E: gp.tree.latex
+	!E: pop.subpop.0.species.ind.tree.0.c
+	!E: gp.tree.c
+	!E: pop.subpop.0.species.ind.tree.0.c
+	!E: gp.tree.c
+	!P: pop.subpop.0.species.ind.tree.0.print-style
+	!P: gp.tree.print-style
+	!P: pop.subpop.0.species.ind.tree.0.c-variables
+	!P: gp.tree.c-variables
+	!P: pop.subpop.0.species.ind.tree.0.c-operators
+	!P: gp.tree.c-operators
+	 P: pop.subpop.0.species.ind.tree.0.tc = tc0
+	<P: gp.tree.tc
+	 P: pop.subpop.0.species.fitness = ec.gp.koza.KozaFitness
+	<P: gp.species.fitness
+	 P: pop.subpop.0.size = 512
+	<P: ec.subpop.size
+	 P: pop.subpop.0.duplicate-retries = 100
+	<P: ec.subpop.duplicate-retries
+Generation 0, Individual 0
+Starting Thesis bot v4
+Bridge: BWAPI Client launched!
+Bridge: Connecting...
+Connected
+Bridge: Waiting to enter match...
+Bridge: Starting match!
+Game Started
+Generation 0, Individual 1
+Generation 0, Individual 2
+Generation 0, Individual 3
+Generation 0, Individual 4
+Generation 0, Individual 5
+Generation 0, Individual 6
+Generation 0, Individual 7
+Generation 0, Individual 8
+Generation 0, Individual 9
+Generation 0, Individual 10
+Generation 0, Individual 11
+Generation 0, Individual 12
+Generation 0, Individual 13
+Generation 0, Individual 14
+Generation 0, Individual 15
+Generation 0, Individual 16
+Generation 0, Individual 17
+Generation 0, Individual 18
+Generation 0, Individual 19
+Generation 0, Individual 20
+Generation 0, Individual 21
+Generation 0, Individual 22
+Generation 0, Individual 23
+Generation 0, Individual 24
+Generation 0, Individual 25
+Generation 0, Individual 26
+Generation 0, Individual 27
+Generation 0, Individual 28
+Generation 0, Individual 29
+Generation 0, Individual 30
+Generation 0, Individual 31
+Generation 0, Individual 32
+Generation 0, Individual 33
+Generation 0, Individual 34
+Generation 0, Individual 35
+Generation 0, Individual 36
+Generation 0, Individual 37
+Generation 0, Individual 38
+Generation 0, Individual 39
+Generation 0, Individual 40
+Generation 0, Individual 41
+Generation 0, Individual 42
+Generation 0, Individual 43
+Generation 0, Individual 44
+Generation 0, Individual 45
+Generation 0, Individual 46
+Generation 0, Individual 47
+Generation 0, Individual 48
+Generation 0, Individual 49
+Generation 0, Individual 50
+Generation 0, Individual 51
+Generation 0, Individual 52
+Generation 0, Individual 53
+Generation 0, Individual 54
+Generation 0, Individual 55
+Generation 0, Individual 56
+Generation 0, Individual 57
+Generation 0, Individual 58
+Generation 0, Individual 59
+Generation 0, Individual 60
+Generation 0, Individual 61
+Generation 0, Individual 62
+Generation 0, Individual 63
+Generation 0, Individual 64
+Generation 0, Individual 65
+Generation 0, Individual 66
+Generation 0, Individual 67
+Generation 0, Individual 68
+Generation 0, Individual 69
+Generation 0, Individual 70
+Generation 0, Individual 71
+Generation 0, Individual 72
+Generation 0, Individual 73
+Generation 0, Individual 74
+Generation 0, Individual 75
+Generation 0, Individual 76
+Generation 0, Individual 77
+Generation 0, Individual 78
+Generation 0, Individual 79
+Generation 0, Individual 80
+Generation 0, Individual 81
+Generation 0, Individual 82
+Generation 0, Individual 83
+Generation 0, Individual 84
+Generation 0, Individual 85
+Generation 0, Individual 86
+Generation 0, Individual 87
+Generation 0, Individual 88
+Generation 0, Individual 89
+Generation 0, Individual 90
+Generation 0, Individual 91
+Generation 0, Individual 92
+Generation 0, Individual 93
+Generation 0, Individual 94
+Generation 0, Individual 95
+Generation 0, Individual 96
+Generation 0, Individual 97
+Generation 0, Individual 98
+Generation 0, Individual 99
+Generation 0, Individual 100
+Generation 0, Individual 101
+Generation 0, Individual 102
+Generation 0, Individual 103
+Generation 0, Individual 104
+Generation 0, Individual 105
+Generation 0, Individual 106
+Generation 0, Individual 107
+Generation 0, Individual 108
+Generation 0, Individual 109
+Generation 0, Individual 110
+Generation 0, Individual 111
+Generation 0, Individual 112
+Generation 0, Individual 113
+Generation 0, Individual 114
+Generation 0, Individual 115
+Generation 0, Individual 116
+Generation 0, Individual 117
+Generation 0, Individual 118
+Generation 0, Individual 119
+Generation 0, Individual 120
+Generation 0, Individual 121
+Generation 0, Individual 122
+Generation 0, Individual 123
+Generation 0, Individual 124
+Generation 0, Individual 125
+Generation 0, Individual 126
+Generation 0, Individual 127
+Generation 0, Individual 128
+Generation 0, Individual 129
+Generation 0, Individual 130
+Generation 0, Individual 131
+Generation 0, Individual 132
+Generation 0, Individual 133
+0 | 9312 | 0 | 109561875
+1 | 4294967295 | 0 | 0
+2 | 4294967295 | 0 | 0
+3 | 4294967295 | 0 | 0
+4 | 4294967295 | 0 | 0
+5 | 4294967295 | 0 | 0
+6 | 4294967295 | 0 | 0
+7 | 4294967295 | 0 | 0
+Connected
+Disconnected

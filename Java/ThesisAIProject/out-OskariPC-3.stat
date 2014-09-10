@@ -1,0 +1,87 @@
+
+Generation: 0
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=23.0 Adjusted=0.041666666666666664 Hits=0
+Tree 0:
+ (* (- (+ x x) x) (+ x (- x x)))
+
+Generation: 1
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=23.0 Adjusted=0.041666666666666664 Hits=0
+Tree 0:
+ (* (- (+ x x) x) (+ x (- x x)))
+
+Generation: 2
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=23.0 Adjusted=0.041666666666666664 Hits=0
+Tree 0:
+ (* (- (+ x x) x) (+ x (- x x)))
+
+Generation: 3
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=37.0 Adjusted=0.02631578947368421 Hits=0
+Tree 0:
+ (* (+ (+ x x) (* (- x x) (* x x))) (* x x))
+
+Generation: 4
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=31.0 Adjusted=0.03125 Hits=0
+Tree 0:
+ (+ (- (* x x) (+ (- x x) (- x x))) (* (+
+     (* x x) (- (- (+ x x) (+ (* (+ x x) (+ x
+     x)) (* x x))) (- (+ x x) (- x x)))) (- x
+     (+ x x))))
+
+Generation: 5
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=31.0 Adjusted=0.03125 Hits=0
+Tree 0:
+ (+ (- (* x x) (+ (- x x) (- x x))) (* (+
+     (* x x) (- (- (+ x x) (+ (* (+ x x) (+ x
+     x)) (* x x))) (- (+ x x) (- x x)))) (- x
+     (+ x x))))
+
+Generation: 6
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=45.0 Adjusted=0.021739130434782608 Hits=0
+Tree 0:
+ (* (* x x) (+ (+ (+ x x) (- x x)) (+ x x)))
+
+Generation: 7
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=40.0 Adjusted=0.024390243902439025 Hits=0
+Tree 0:
+ (* (+ (* (+ x x) (* (- x (- x x)) (+ x x)))
+     x) (+ x (* x x)))
+
+Generation: 8
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=36.0 Adjusted=0.02702702702702703 Hits=0
+Tree 0:
+ (* (+ x x) (+ (- x x) (+ x x)))
+
+Generation: 9
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=36.0 Adjusted=0.02702702702702703 Hits=0
+Tree 0:
+ (* (+ x x) (+ (- x x) (+ x x)))
