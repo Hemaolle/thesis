@@ -104,11 +104,6 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 			final int subpopulation, final int threadnum) {
 		if (!ind.evaluated) // don't bother reevaluating
 		{
-			if (state.generation != currentGen) {
-				currentGen = state.generation;
-				individualssEvaluatedThisGen = 0;
-			}
-
 			this.ind = ind;
 			this.state = state;
 			this.threadnum = threadnum;
@@ -144,15 +139,31 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 			f.setStandardizedFitness(state, fitness);
 			f.hits = hits;
 			ind.evaluated = true;
-			individualssEvaluatedThisGen++;
 
-			System.out.println("Evaluated in thread " + threadnum);
-			System.out
-					.println("Generation progress: "
-							+ ((float) individualssEvaluatedThisGen)
-							/ state.population.subpops[subpopulation].individuals.length
-							* 100 + " %");
+			printProgressInfo(subpopulation, threadnum);
 		}
+	}
+
+	/**
+	 * Print information about the evolution progress. Prints the current thread
+	 * number and the progress of the current evolution.
+	 * 
+	 * @param subpopulation
+	 *            Index of the current subpopulation
+	 * @param threadnum
+	 *            Index of the current thread.
+	 */
+	private void printProgressInfo(int subpopulation, int threadnum) {
+		if (state.generation != currentGen) {
+			currentGen = state.generation;
+			individualssEvaluatedThisGen = 0;
+		}
+		individualssEvaluatedThisGen++;
+		System.out.println("Evaluated in thread " + threadnum);
+		System.out.println("Generation progress: "
+				+ ((float) individualssEvaluatedThisGen)
+				/ state.population.subpops[subpopulation].individuals.length
+				* 100 + " %");
 	}
 
 	/**
