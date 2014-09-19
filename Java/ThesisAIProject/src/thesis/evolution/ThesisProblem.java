@@ -50,6 +50,9 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	int repeatedEvaluations; // How many times a single individual should be
 								// evaluated?
 
+	int currentGen = 0;
+	int individualssEvaluatedThisGen = 0;
+
 	/**
 	 * Setup the evolution. Read how many times an individual should be
 	 * evaluated. Connect to the remote BroodWar clients.
@@ -101,6 +104,11 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 			final int subpopulation, final int threadnum) {
 		if (!ind.evaluated) // don't bother reevaluating
 		{
+			if (state.generation != currentGen) {
+				currentGen = state.generation;
+				individualssEvaluatedThisGen = 0;
+			}
+
 			this.ind = ind;
 			this.state = state;
 			this.threadnum = threadnum;
@@ -136,7 +144,14 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 			f.setStandardizedFitness(state, fitness);
 			f.hits = hits;
 			ind.evaluated = true;
+			individualssEvaluatedThisGen++;
+
 			System.out.println("Evaluated in thread " + threadnum);
+			System.out
+					.println("Generation progress: "
+							+ ((float) individualssEvaluatedThisGen)
+							/ state.population.subpops[subpopulation].individuals.length
+							* 100 + " %");
 		}
 	}
 
