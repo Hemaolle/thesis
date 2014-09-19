@@ -42,13 +42,13 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * affects printing potential values of the points around an unit on the
 	 * game window.
 	 */
-	final static boolean DEBUG_INFO = true;
+	final static boolean DEBUG_INFO = false;
 	/**
 	 * The maximum distance of the move command from the unit position.
 	 */
 	final static int MOVE_DISTANCE = 45;
 	/** Determines the game speed in frames per second. */
-	final static int GAME_SPEED = 25;
+	final static int GAME_SPEED = 0;
 	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.

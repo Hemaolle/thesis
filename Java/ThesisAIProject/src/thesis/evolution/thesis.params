@@ -34,13 +34,13 @@ eval.problem.data = thesis.evolution.DoubleData
 # Using the average fitness.
 eval.problem.repeated-evaluations = 10
 
-# omat lisäykset
+# own additions
 pop.subpop.0.size =			32
 generations =				26
 print-params = true
 
 #evalthreads = 1
- evalthreads = 8
+ evalthreads = 4
  
 seed.0 = time
 seed.1 = time
@@ -56,3 +56,7 @@ pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.0.tc = tc0
 pop.subpop.0.species.ind.tree.1 = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.1.tc = tc0
+
+# Print programs in results in c style rather than
+# lisp style.
+gp.tree.print-style=c
