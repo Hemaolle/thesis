@@ -110,6 +110,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 	private Mirror mirror = new Mirror();
 	/** The BroodWar game from BWMirror */
 	Game game;
+	List<Unit> myUnitsNoRevealers = new ArrayList<Unit>();
+	List<Unit> enemyUnitsNoRevealers = new ArrayList<Unit>();
 
 	/**
 	 * Creates the AI client and gets results from it indefinitely.
@@ -265,6 +267,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	@Override
 	public void onFrame() {
+		cacheUnits();
 		populateUnitHashMaps();
 		// Comment: tried to wait for the first request from evolution
 		// while (!isStarted) {
@@ -287,14 +290,19 @@ public class Controller extends DefaultBWListener implements Runnable,
 			game.leaveGame();
 		}
 
-		game.drawTextScreen(0, 20, BOT_NAME);
+		game.drawTextScreen(0, 20, BOT_NAME);		
 		checkForRoundEnd();
-
 		visualizer.highlightUnits();
 
 		for (Unit u : getMyUnitsNoRevealers()) {
 			handleUnit(u);
 		}
+	}
+
+	private void cacheUnits() {
+		myUnitsNoRevealers = removeRevealersFromUnitSet(game.self().getUnits());
+		enemyUnitsNoRevealers = removeRevealersFromUnitSet(game.enemy()
+				.getUnits());
 	}
 
 	/**
@@ -309,7 +317,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 		if (isAttackInProgress.isEmpty())
 			for (Unit u : getMyUnitsNoRevealers())
-				isAttackInProgress.put(u.getID(), false);
+				isAttackInProgress.put(u.getID(), false);			
 	}
 
 	/**
@@ -333,6 +341,12 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * to 500. At the start of a new round the minerals will be reset to 0.
 	 */
 	private void checkForRoundEnd() {
+		// It takes one frame to enable the perfect information flag so the
+		// enemy units can't be seen in the first frame. If we called
+		// checkForRoundEnd in the first frame, it would think that the enemy
+		// has been defeated.
+		if (game.getFrameCount() == 0)
+			return;
 		if (!isRoundResultRetrievable
 				&& !hasBeenRoundEndRegistered
 				&& (getMyUnitsNoRevealers().size() == 0 || getEnemyUnitsNoRevealers()
@@ -351,6 +365,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 		// retrieved. Time to start a new round.
 		if (hasBeenRoundEndRegistered && !isRoundResultRetrievable
 				&& hasMatchStarted) {
+			System.out.println("Restart game");
 			game.restartGame();
 			hasMatchStarted = false;
 		}
@@ -379,7 +394,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * @return A list of my units without map revealers.
 	 */
 	public List<Unit> getMyUnitsNoRevealers() {
-		return removeRevealersFromUnitSet(game.self().getUnits());
+		return myUnitsNoRevealers;
 	}
 
 	/**
@@ -388,7 +403,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * @return A list of enemy units without map revealers.
 	 */
 	public List<Unit> getEnemyUnitsNoRevealers() {
-		return removeRevealersFromUnitSet(game.enemy().getUnits());
+		return enemyUnitsNoRevealers;
 	}
 
 	/**
@@ -601,4 +616,10 @@ public class Controller extends DefaultBWListener implements Runnable,
 		}
 		return highestIndex;
 	}
+	
+	@Override
+    public void onUnitDestroy(Unit unit) {
+		isAttackInProgress.remove(unit.getID());
+		hasAttackOrderBeenGiven.remove(unit.getID());
+    }
 }
