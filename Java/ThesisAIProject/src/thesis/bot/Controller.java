@@ -41,9 +41,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 	public volatile boolean isRoundResultRetrievable = false;
 
 	/**
-	 * Determines if debug information should be displayed. Currently only
-	 * affects printing potential values of the points around an unit on the
-	 * game window.
+	 * Determines if debug information should be displayed. Affects printing
+	 * potential values of the points around an unit on the game window. Also
+	 * affects graphical visualizations.
 	 */
 	final static boolean DEBUG_INFO = false;
 	/**
@@ -242,7 +242,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	public void onStart() {
 		System.out.println("Game Started");
 		game = mirror.getGame();
-		visualizer = new Visualizer(game, this);
+		visualizer = new Visualizer(game, this, DEBUG_INFO);
 
 		final int ENABLECODE_PERFECT_INFORMATION = 0;
 		// final int ENABLECODE_USER_INPUT = 1;
@@ -253,7 +253,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 		if (!GUI_ON)
 			game.setGUI(false);
-		hasMatchStarted = true;		
+		hasMatchStarted = true;
 
 		hasBeenRoundEndRegistered = false;
 	}
@@ -333,9 +333,10 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * to 500. At the start of a new round the minerals will be reset to 0.
 	 */
 	private void checkForRoundEnd() {
-		if (!isRoundResultRetrievable && !hasBeenRoundEndRegistered
+		if (!isRoundResultRetrievable
+				&& !hasBeenRoundEndRegistered
 				&& (getMyUnitsNoRevealers().size() == 0 || getEnemyUnitsNoRevealers()
-						.size() == 0)) {			
+						.size() == 0)) {
 			hasBeenRoundEndRegistered = true;
 			isRoundResultRetrievable = true;
 
@@ -348,7 +349,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 		// This means that the round has ended and the round result has been
 		// retrieved. Time to start a new round.
-		if (hasBeenRoundEndRegistered && !isRoundResultRetrievable && hasMatchStarted) {			
+		if (hasBeenRoundEndRegistered && !isRoundResultRetrievable
+				&& hasMatchStarted) {
 			game.restartGame();
 			hasMatchStarted = false;
 		}
@@ -421,8 +423,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 		double[] potentials = potentialCalculator.getPotentialsAround(u);
 		Position moveDirection = potentialCalculator
 				.getMoveDirection(potentials);
-		if (DEBUG_INFO)
-			visualizer.drawPotentialValues(potentials);
+		visualizer.drawPotentialValues(potentials);
 		if (isAttacking(u)) {
 			return;
 		}
