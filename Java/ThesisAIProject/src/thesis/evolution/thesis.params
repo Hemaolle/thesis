@@ -60,3 +60,8 @@ pop.subpop.0.species.ind.tree.1.tc = tc0
 # Print programs in results in c style rather than
 # lisp style.
 gp.tree.print-style=c
+
+# More statistics than just the SimpleStatistics.
+stat = ec.gp.koza.KozaShortStatistics
+stat.do-size = true
+stat.do-time = true
