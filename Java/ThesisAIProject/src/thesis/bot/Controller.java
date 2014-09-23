@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
+
 import thesis.rmi.PotentialFunctionProvider;
 import thesis.rmi.RemoteBotInterface;
 import bwapi.*;
@@ -49,7 +51,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	final static int MOVE_DISTANCE = 45;
 	/** Determines the game speed in frames per second. */
-	final static int GAME_SPEED = 5;
+	final static int GAME_SPEED = 0;
 	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.
@@ -251,7 +253,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 		if (!GUI_ON)
 			game.setGUI(false);
-		hasMatchStarted = true;
+		hasMatchStarted = true;		
+
+		hasBeenRoundEndRegistered = false;
 	}
 
 	/**
@@ -282,7 +286,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 		if (Thread.currentThread().isInterrupted()) {
 			game.leaveGame();
 		}
-		
+
 		game.drawTextScreen(0, 20, BOT_NAME);
 		checkForRoundEnd();
 
@@ -329,7 +333,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * to 500. At the start of a new round the minerals will be reset to 0.
 	 */
 	private void checkForRoundEnd() {
-		if (game.self().minerals() == 500 && !hasBeenRoundEndRegistered) {
+		if (!isRoundResultRetrievable && !hasBeenRoundEndRegistered
+				&& (getMyUnitsNoRevealers().size() == 0 || getEnemyUnitsNoRevealers()
+						.size() == 0)) {			
 			hasBeenRoundEndRegistered = true;
 			isRoundResultRetrievable = true;
 
@@ -339,8 +345,12 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 			calculateScore();
 		}
-		if (game.self().minerals() == 0 && hasBeenRoundEndRegistered) {
-			hasBeenRoundEndRegistered = false;
+
+		// This means that the round has ended and the round result has been
+		// retrieved. Time to start a new round.
+		if (hasBeenRoundEndRegistered && !isRoundResultRetrievable && hasMatchStarted) {			
+			game.restartGame();
+			hasMatchStarted = false;
 		}
 	}
 

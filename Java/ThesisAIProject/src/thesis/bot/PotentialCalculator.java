@@ -88,8 +88,14 @@ public class PotentialCalculator {
 			double ylen = enemyPos.getY() - y;
 			double enemyDistance = Math.sqrt(xlen * xlen + ylen * ylen);
 			if (potentialProvider == null) {
-				// potential += -(0.05 * enemyDistance - 5) original
-				// * (0.05 * enemyDistance - 5);
+				
+				//fast game
+				potential = 0;
+				
+				//original
+//				 potential += -(0.05 * enemyDistance - 5)
+//				 * (0.05 * enemyDistance - 5);
+				
 				// potential += 3 * (enemyDistance * enemyDistance); first
 				// evolution run
 				// potential += -(enemyDistance - 120) * (enemyDistance - 136);
@@ -97,7 +103,7 @@ public class PotentialCalculator {
 				// potential -= 1.0 / (0.0001 * distMapTop);
 				// potential -= 1.0 / (0.0001 * distMapLeft);
 				// potential -= 1.0 / (0.0001 * distMapRight);
-				potential += ((enemyDistance - 96.4901227341802) / (enemyDistance * 191.22811092392067));
+//				potential += ((enemyDistance - 96.4901227341802) / (enemyDistance * 191.22811092392067));
 			} else {
 				try {
 					potential += potentialProvider.getPotential(enemyDistance,
