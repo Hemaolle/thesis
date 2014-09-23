@@ -2,6 +2,7 @@ package thesis.bot;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import thesis.rmi.PotentialFunctionProvider;
@@ -48,12 +49,12 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	final static int MOVE_DISTANCE = 45;
 	/** Determines the game speed in frames per second. */
-	final static int GAME_SPEED = 0;
+	final static int GAME_SPEED = 5;
 	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.
 	 */
-	final static String BOT_NAME = "Thesis bot v4";
+	final static String BOT_NAME = "Thesis bot v5";
 	/**
 	 * Determines if the StarCraft client should draw the game on the screen
 	 * every logical game frame. Disabling the GUI should speed the game up.
@@ -67,13 +68,14 @@ public class Controller extends DefaultBWListener implements Runnable,
 	boolean hasBeenRoundEndRegistered = false;
 	/**
 	 * Indicates if the isStartingAttack has already changed to true after a
-	 * unit has been issued an attack command.
+	 * unit has been issued an attack command. The key is the unit ID.
 	 */
-	boolean isAttackInProgress = false;
+	HashMap<Integer, Boolean> isAttackInProgress = new HashMap<Integer, Boolean>();
 	/**
-	 * Used to avoid giving a move order before the attack has been finished.
+	 * Used to avoid giving a move order before the attack of a unit has been
+	 * finished. The key is the unit ID.
 	 */
-	boolean hasBeenAttackOrderGiven = false;
+	HashMap<Integer, Boolean> hasAttackOrderBeenGiven = new HashMap<Integer, Boolean>();
 	/**
 	 * If enabled, the game stops in every frame and only proceeds by pressing
 	 * enter in the command line.
@@ -162,7 +164,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * the end score of that round event though for the beginning of the round
 	 * the default potential function was used.
 	 */
-	
+
 	/**
 	 * Returns when a single round of fighting has finished. <strike>Also starts
 	 * the client if it hasn't been started yet.</strike>
@@ -171,7 +173,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 *            The object that will provide the potential function for this
 	 *            round.
 	 * @return Score for the round.
-	 */	
+	 */
 	public int getRoundScore(PotentialFunctionProvider potentialProvider) {
 		System.out.println("Get round score (with potential provider) called");
 		hasEvolutionStarted = true;
@@ -241,9 +243,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 		visualizer = new Visualizer(game, this);
 
 		final int ENABLECODE_PERFECT_INFORMATION = 0;
-//		final int ENABLECODE_USER_INPUT = 1;
-		
-		//game.enableFlag(ENABLECODE_USER_INPUT);
+		// final int ENABLECODE_USER_INPUT = 1;
+
+		// game.enableFlag(ENABLECODE_USER_INPUT);
 		game.enableFlag(ENABLECODE_PERFECT_INFORMATION);
 		game.setLocalSpeed(GAME_SPEED);
 
@@ -259,6 +261,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	@Override
 	public void onFrame() {
+		populateUnitHashMaps();
 		// Comment: tried to wait for the first request from evolution
 		// while (!isStarted) {
 		// try {
@@ -279,6 +282,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 		if (Thread.currentThread().isInterrupted()) {
 			game.leaveGame();
 		}
+		
 		game.drawTextScreen(0, 20, BOT_NAME);
 		checkForRoundEnd();
 
@@ -287,6 +291,21 @@ public class Controller extends DefaultBWListener implements Runnable,
 		for (Unit u : getMyUnitsNoRevealers()) {
 			handleUnit(u);
 		}
+	}
+
+	/**
+	 * Checks if the HashMaps containing information about the units' attack
+	 * states have been filled for the AI player's units and fills them if they
+	 * are empty.
+	 */
+	private void populateUnitHashMaps() {
+		if (hasAttackOrderBeenGiven.isEmpty())
+			for (Unit u : getMyUnitsNoRevealers())
+				hasAttackOrderBeenGiven.put(u.getID(), false);
+
+		if (isAttackInProgress.isEmpty())
+			for (Unit u : getMyUnitsNoRevealers())
+				isAttackInProgress.put(u.getID(), false);
 	}
 
 	/**
@@ -314,8 +333,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 			hasBeenRoundEndRegistered = true;
 			isRoundResultRetrievable = true;
 
-			isAttackInProgress = false;
-			hasBeenAttackOrderGiven = false;
+			isAttackInProgress.clear();
+			hasAttackOrderBeenGiven.clear();
 			isStepThroughEnabled = false;
 
 			calculateScore();
@@ -411,8 +430,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 		// position of the move command given.
 		u.move(offsetPosition(moveTo, moveDirection, 20), false);
 
-		visualizer.visualizeDestination(u, moveTo, hasBeenAttackOrderGiven
-				|| isAttackInProgress);
+		visualizer.visualizeDestination(u, moveTo,
+				getHasAttackOrderBeenGiven(u) || getIsAttackInProgress(u));
 	}
 
 	/**
@@ -447,21 +466,43 @@ public class Controller extends DefaultBWListener implements Runnable,
 		// && u.getOrder() == OrderType.OrderTypes.AttackUnit)) {
 
 		if (u.isAttackFrame() || u.isStartingAttack()
-				|| (!isAttackInProgress && hasBeenAttackOrderGiven)) {
+				|| (!getIsAttackInProgress(u) && getHasAttackOrderBeenGiven(u))) {
 			// Attack order has been given and attack hasn't finished yet.
-			if (!isAttackInProgress && (u.isStartingAttack())) {
+			if (!getIsAttackInProgress(u) && (u.isStartingAttack())) {
 				// First frame of the actual attack.
-				isAttackInProgress = true;
-				hasBeenAttackOrderGiven = false;
+				isAttackInProgress.put(u.getID(), true);
+				hasAttackOrderBeenGiven.put(u.getID(), false);
 			}
 			return true;
-		} else if (isAttackInProgress) {
+		} else if (getIsAttackInProgress(u)) {
 			// First frame after the attack.
-			isAttackInProgress = false;
+			isAttackInProgress.put(u.getID(), false);
 		}
 
 		// No attacking in progress.
 		return false;
+	}
+
+	/**
+	 * Indicates if the unit has an attack in progress.
+	 * 
+	 * @param u
+	 *            The unit to check.
+	 * @return True if the unit has an attack in progress.
+	 */
+	private boolean getIsAttackInProgress(Unit u) {
+		return isAttackInProgress.get(u.getID()).booleanValue();
+	}
+
+	/**
+	 * Indicates if the unit has been given an attack order.
+	 * 
+	 * @param u
+	 *            The unit to check.
+	 * @return True if the unit has been given an attack order.
+	 */
+	private boolean getHasAttackOrderBeenGiven(Unit u) {
+		return hasAttackOrderBeenGiven.get(u.getID()).booleanValue();
 	}
 
 	/**
@@ -477,7 +518,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 		for (Unit eu : getEnemyUnitsNoRevealers()) {
 			if (u.isInWeaponRange(eu)) {
-				hasBeenAttackOrderGiven = true;
+				hasAttackOrderBeenGiven.put(u.getID(), true);
 				u.attack(eu, false);
 				attack = true;
 				visualizer.attackTarget = eu;
@@ -548,5 +589,5 @@ public class Controller extends DefaultBWListener implements Runnable,
 			}
 		}
 		return highestIndex;
-	}	
+	}
 }
