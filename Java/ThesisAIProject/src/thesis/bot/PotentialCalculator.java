@@ -56,7 +56,7 @@ public class PotentialCalculator {
 	}
 
 	/**
-	 * Get the potential for coordinates. <strike>The potential is calculated by
+	 * Gets the potential for coordinates. <strike>The potential is calculated by
 	 * adding -(0.05 * enemyDistance - 5)^2 for each enemy unit. This potential
 	 * tries to keep a single unit at it's maximum attacking range from a single
 	 * enemy.</strike>
@@ -129,6 +129,11 @@ public class PotentialCalculator {
 		return potential;
 	}
 
+	/**
+	 * Calculates the potential depending on proximity to a map edge.
+	 * @param x Unit's distance from map edge
+	 * @return The potential caused by the map edge.
+	 */
 	public double mapEdgePotential(double x) {
 		return (((-371.5028023902601 - -45.14319119960675) + x) / x) * 110.42600238815817;
 	}
