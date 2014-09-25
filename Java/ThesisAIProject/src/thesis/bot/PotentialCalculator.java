@@ -73,11 +73,13 @@ public class PotentialCalculator {
 	private double getPotential(double x, double y) {
 		double potential = 0;
 
-		// Position mapSize = bot.game.getMap().getSize();
-		double distMapBottom = bot.game.mapHeight() - y;
+		// Multiply map width and height by tile size to get values in pixels.
+		double distMapBottom = bot.game.mapHeight() * 32 - y;
 		double distMapTop = y;
 		double distMapLeft = x;
-		double distMapRight = bot.game.mapWidth() - x;
+		double distMapRight = bot.game.mapWidth() * 32 - x;
+		
+		//System.out.println("distMapBottom " + distMapBottom + " distMapTop " + distMapTop + " distMapLeft " + distMapLeft + " distMapRight " + distMapRight);
 
 		double[] distancesFromEdges = { distMapBottom, distMapTop, distMapLeft,
 				distMapRight };
@@ -88,14 +90,14 @@ public class PotentialCalculator {
 			double ylen = enemyPos.getY() - y;
 			double enemyDistance = Math.sqrt(xlen * xlen + ylen * ylen);
 			if (potentialProvider == null) {
-				
-				//fast game
-				potential = 0;
-				
-				//original
-//				 potential += -(0.05 * enemyDistance - 5)
-//				 * (0.05 * enemyDistance - 5);
-				
+
+				// fast game
+				//potential = 0;
+
+				// original
+				// potential += -(0.05 * enemyDistance - 5)
+				// * (0.05 * enemyDistance - 5);
+
 				// potential += 3 * (enemyDistance * enemyDistance); first
 				// evolution run
 				// potential += -(enemyDistance - 120) * (enemyDistance - 136);
@@ -103,7 +105,13 @@ public class PotentialCalculator {
 				// potential -= 1.0 / (0.0001 * distMapTop);
 				// potential -= 1.0 / (0.0001 * distMapLeft);
 				// potential -= 1.0 / (0.0001 * distMapRight);
-//				potential += ((enemyDistance - 96.4901227341802) / (enemyDistance * 191.22811092392067));
+				// potential += ((enemyDistance - 96.4901227341802) /
+				// (enemyDistance * 191.22811092392067));
+				potential += -235.4179177051288;
+				potential += mapEdgePotential(distMapBottom);
+				potential += mapEdgePotential(distMapTop);
+				potential += mapEdgePotential(distMapLeft);
+				potential += mapEdgePotential(distMapRight);
 			} else {
 				try {
 					potential += potentialProvider.getPotential(enemyDistance,
@@ -115,6 +123,10 @@ public class PotentialCalculator {
 			}
 		}
 		return potential;
+	}
+
+	public double mapEdgePotential(double x) {
+		return (((-371.5028023902601 - -45.14319119960675) + x) / x) * 110.42600238815817;
 	}
 
 	/**
@@ -136,7 +148,7 @@ public class PotentialCalculator {
 				double j = n;
 
 				/*
-				 * It's OK that i and j will be < 0, because getPotential can
+				 * It's OK that i and j will be < 1, because getPotential can
 				 * handle doubles. It's important that the diagonal potentials
 				 * are checked in positions whose distance from the unit is the
 				 * same as with the other directions. Otherwise the diagonal
