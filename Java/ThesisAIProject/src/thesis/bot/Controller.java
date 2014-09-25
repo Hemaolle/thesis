@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.sun.org.glassfish.external.statistics.annotations.Reset;
-
 import thesis.rmi.PotentialFunctionProvider;
 import thesis.rmi.RemoteBotInterface;
 import bwapi.*;
@@ -61,7 +59,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * Determines if the StarCraft client should draw the game on the screen
 	 * every logical game frame. Disabling the GUI should speed the game up.
 	 */
-	final static boolean GUI_ON = true;
+	final static boolean GUI_ON = false;
 
 	/**
 	 * If the notification about a round end has been registered (the map used
@@ -290,7 +288,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 			game.leaveGame();
 		}
 
-		game.drawTextScreen(0, 20, BOT_NAME);		
+		game.drawTextScreen(0, 20, BOT_NAME);
 		checkForRoundEnd();
 		visualizer.highlightUnits();
 
@@ -317,7 +315,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 		if (isAttackInProgress.isEmpty())
 			for (Unit u : getMyUnitsNoRevealers())
-				isAttackInProgress.put(u.getID(), false);			
+				isAttackInProgress.put(u.getID(), false);
 	}
 
 	/**
@@ -347,17 +345,18 @@ public class Controller extends DefaultBWListener implements Runnable,
 		// has been defeated.
 		if (game.getFrameCount() == 0)
 			return;
-		if (!isRoundResultRetrievable
-				&& !hasBeenRoundEndRegistered
-				&& (getMyUnitsNoRevealers().size() == 0 || getEnemyUnitsNoRevealers()
-						.size() == 0)) {
+		if ((!isRoundResultRetrievable 
+				&& !hasBeenRoundEndRegistered 
+				&& (getMyUnitsNoRevealers().size() == 0 || getEnemyUnitsNoRevealers().size() == 0)
+				)
+				|| game.getFrameCount() > 7500) {
 			hasBeenRoundEndRegistered = true;
 			isRoundResultRetrievable = true;
 
 			isAttackInProgress.clear();
 			hasAttackOrderBeenGiven.clear();
 			isStepThroughEnabled = false;
-
+			
 			calculateScore();
 		}
 
@@ -616,10 +615,10 @@ public class Controller extends DefaultBWListener implements Runnable,
 		}
 		return highestIndex;
 	}
-	
+
 	@Override
-    public void onUnitDestroy(Unit unit) {
+	public void onUnitDestroy(Unit unit) {
 		isAttackInProgress.remove(unit.getID());
 		hasAttackOrderBeenGiven.remove(unit.getID());
-    }
+	}
 }
