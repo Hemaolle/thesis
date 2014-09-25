@@ -39,8 +39,7 @@ pop.subpop.0.size =			32
 generations =				26
 print-params = true
 
-#evalthreads = 1
- evalthreads = 4
+evalthreads = 4
  
 seed.0 = time
 seed.1 = time
@@ -65,3 +64,7 @@ gp.tree.print-style=c
 stat = ec.gp.koza.KozaShortStatistics
 stat.do-size = true
 stat.do-time = true
+
+stat.num-children = 1
+stat.child.0 = ec.simple.SimpleStatistics
+stat.child.0.file = $out2.stat
