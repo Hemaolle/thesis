@@ -38,6 +38,7 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	public static final String P_REPEATEDEVALUATIONS = "repeated-evaluations";
 
 	public double currentX;
+	public double currentY;
 	/** The broodwar clients used in evaluation */
 	ArrayList<RemoteBotInterface> bwClients;
 
@@ -176,8 +177,10 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 *            Player unit's distance from the enemy unit
 	 * @return The potential for the enemy.
 	 */
-	private double getEnemyPotential(double distanceFromEnemy) {
+	private double getEnemyPotential(double distanceFromEnemy,
+			double ownMaximumShootDistance) {
 		currentX = distanceFromEnemy;
+		currentY = ownMaximumShootDistance;
 		((GPIndividual) ind).trees[0].child.eval(state, threadnum, localInput,
 				stack, ((GPIndividual) ind), this);
 		return localInput.x;
@@ -208,8 +211,9 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 * Using the function from the individual currently being evaluated.
 	 * 
 	 */
-	public double getPotential(double distanceFromEnemy) {
-		return getEnemyPotential(distanceFromEnemy);
+	public double getPotential(double distanceFromEnemy,
+			double ownMaximumShootDistance) {
+		return getEnemyPotential(distanceFromEnemy, ownMaximumShootDistance);
 	}
 
 	/**
@@ -219,9 +223,9 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 * 
 	 */
 	public double getPotential(double distanceFromEnemy,
-			double[] distancesFromEdges) {
+			double ownMaximumShootDistance, double[] distancesFromEdges) {
 		double potential = 0;
-		potential += getPotential(distanceFromEnemy);
+		potential += getPotential(distanceFromEnemy, ownMaximumShootDistance);
 		potential += getMapEdgePotential(distancesFromEdges);
 		return potential;
 	}

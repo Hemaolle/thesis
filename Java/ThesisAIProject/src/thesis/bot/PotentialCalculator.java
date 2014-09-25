@@ -51,8 +51,8 @@ public class PotentialCalculator {
 	 *            The position
 	 * @return
 	 */
-	double getPotential(Position pos) {
-		return getPotential(pos.getX(), pos.getY());
+	double getPotential(Position pos, double ownMaximumShootDistance) {
+		return getPotential(pos.getX(), pos.getY(), ownMaximumShootDistance);
 	}
 
 	/**
@@ -70,7 +70,8 @@ public class PotentialCalculator {
 	 *            Y coordinate
 	 * @return Total potential for the location.
 	 */
-	private double getPotential(double x, double y) {
+	private double getPotential(double x, double y,
+			double ownMaximumShootDistance) {
 		double potential = 0;
 
 		// Multiply map width and height by tile size to get values in pixels.
@@ -78,8 +79,10 @@ public class PotentialCalculator {
 		double distMapTop = y;
 		double distMapLeft = x;
 		double distMapRight = bot.game.mapWidth() * 32 - x;
-		
-		//System.out.println("distMapBottom " + distMapBottom + " distMapTop " + distMapTop + " distMapLeft " + distMapLeft + " distMapRight " + distMapRight);
+
+		// System.out.println("distMapBottom " + distMapBottom + " distMapTop "
+		// + distMapTop + " distMapLeft " + distMapLeft + " distMapRight " +
+		// distMapRight);
 
 		double[] distancesFromEdges = { distMapBottom, distMapTop, distMapLeft,
 				distMapRight };
@@ -92,7 +95,7 @@ public class PotentialCalculator {
 			if (potentialProvider == null) {
 
 				// fast game
-				//potential = 0;
+				// potential = 0;
 
 				// original
 				// potential += -(0.05 * enemyDistance - 5)
@@ -115,6 +118,7 @@ public class PotentialCalculator {
 			} else {
 				try {
 					potential += potentialProvider.getPotential(enemyDistance,
+							u.getType().groundWeapon().maxRange(),
 							distancesFromEdges);
 				} catch (RemoteException e) {
 					System.err.println("Remote potential evaluation failed: ");
@@ -142,6 +146,8 @@ public class PotentialCalculator {
 	double[] getPotentialsAround(Unit u) {
 		double[] potentials = new double[9];
 		int k = 0;
+		double ownMaximumShootDistance = u.getType().groundWeapon().maxRange();
+
 		for (int n = -1; n <= 1; n++) {
 			for (int m = -1; m <= 1; m++) {
 				double i = m;
@@ -163,7 +169,8 @@ public class PotentialCalculator {
 
 				double posX = u.getPosition().getX() + i;
 				double posY = u.getPosition().getY() + j;
-				potentials[k] = getPotential(posX, posY);
+				potentials[k] = getPotential(posX, posY,
+						ownMaximumShootDistance);
 				k++;
 			}
 		}
@@ -208,14 +215,15 @@ public class PotentialCalculator {
 	 *         position.
 	 */
 	Position getHighestPotentialPosition(Position from, Position dir,
-			int distance) throws IllegalArgumentException {
+			int distance, double ownMaximumShootDistance)
+			throws IllegalArgumentException {
 		if (dir.getX() < -1 || 1 < dir.getX() || dir.getY() < -1
 				|| 1 < dir.getY())
 			throw new IllegalArgumentException("Direction should "
 					+ "have coordinates between -1 and 1. Was " + dir.getX()
 					+ " and " + dir.getY());
 
-		double highestPotential = getPotential(from);
+		double highestPotential = getPotential(from, ownMaximumShootDistance);
 		Position highestPosition = from;
 		if ((dir.getX() * dir.getX() + dir.getY() * dir.getY()) == 2) {
 			distance = (int) (distance / Math.sqrt(2.0));
@@ -233,7 +241,8 @@ public class PotentialCalculator {
 
 			Position offset = PosUtils.multiply(dir, i);
 
-			double currentPotential = getPotential(PosUtils.add(from, offset));
+			double currentPotential = getPotential(PosUtils.add(from, offset),
+					ownMaximumShootDistance);
 
 			// -------------debug
 			//

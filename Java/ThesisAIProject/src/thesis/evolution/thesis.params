@@ -7,8 +7,19 @@ parent.0 = E:/Tiedostot/Workspace/OneDrive/Gradu/3rd party libraries/ecj/params/
 # the next four items are already defined in koza.params, but we
 # put them here to be clear.
 
+gp.tc.size = 2
+gp.tc = ec.gp.GPTreeConstraints
+gp.tc.returns = nil
+gp.tc.init = ec.gp.koza.HalfBuilder
+
+gp.tc.0.name = tc0
+gp.tc.0.fset = f1
+gp.tc.1.name = tc1
+gp.tc.1.fset = f0
+
 # We have one function set, of class GPFunctionSet
-gp.fs.size = 1
+gp.fs.size = 2
+
 gp.fs.0 = ec.gp.GPFunctionSet
 # We'll call the function set "f0".
 gp.fs.0.name = f0
@@ -27,6 +38,26 @@ gp.fs.0.func.4 = thesis.evolution.Div
 gp.fs.0.func.4.nc = nc2
 gp.fs.0.func.5 = thesis.evolution.FloatERC
 gp.fs.0.func.5.nc = nc0
+
+gp.fs.1 = ec.gp.GPFunctionSet
+gp.fs.1.name = f1
+
+# We have six functions in the function set.  They are:
+gp.fs.1.size = 7
+gp.fs.1.func.0 = thesis.evolution.X
+gp.fs.1.func.0.nc = nc0
+gp.fs.1.func.1 = thesis.evolution.Add
+gp.fs.1.func.1.nc = nc2
+gp.fs.1.func.2 = thesis.evolution.Sub
+gp.fs.1.func.2.nc = nc2
+gp.fs.1.func.3 = thesis.evolution.Mul
+gp.fs.1.func.3.nc = nc2
+gp.fs.1.func.4 = thesis.evolution.Div
+gp.fs.1.func.4.nc = nc2
+gp.fs.1.func.5 = thesis.evolution.FloatERC
+gp.fs.1.func.5.nc = nc0
+gp.fs.1.func.6 = thesis.evolution.Y
+gp.fs.1.func.6.nc = nc0
 
 eval.problem = thesis.evolution.ThesisProblem
 eval.problem.data = thesis.evolution.DoubleData

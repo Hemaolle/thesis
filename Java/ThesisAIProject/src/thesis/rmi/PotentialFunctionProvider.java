@@ -30,7 +30,8 @@ public interface PotentialFunctionProvider extends Remote {
 	 * @throws RemoteException
 	 *             If something goes wrong with the remote function call.
 	 */
-	public double getPotential(double distanceFromEnemy) throws RemoteException;
+	public double getPotential(double distanceFromEnemy,
+			double ownMaximumShootDistance) throws RemoteException;
 
 	/**
 	 * Returns the potential based on the distance from one enemy unit and the
@@ -48,5 +49,6 @@ public interface PotentialFunctionProvider extends Remote {
 	 *             If something goes wrong with the remote function call.
 	 */
 	public double getPotential(double distanceFromEnemy,
-			double[] distancesFromEdges) throws RemoteException;
+			double ownMaximumShootDistance, double[] distancesFromEdges)
+			throws RemoteException;
 }

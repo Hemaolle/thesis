@@ -39,9 +39,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 	public volatile boolean isRoundResultRetrievable = false;
 
 	/**
-	 * Determines if debug information should be displayed. Affects printing
+	 * Determines if debug information should be displayed. Enables printing
 	 * potential values of the points around an unit on the game window. Also
-	 * affects graphical visualizations.
+	 * enables graphical visualizations.
 	 */
 	final static boolean DEBUG_INFO = false;
 	/**
@@ -345,10 +345,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 		// has been defeated.
 		if (game.getFrameCount() == 0)
 			return;
-		if ((!isRoundResultRetrievable 
-				&& !hasBeenRoundEndRegistered 
-				&& (getMyUnitsNoRevealers().size() == 0 || getEnemyUnitsNoRevealers().size() == 0)
-				)
+		if ((!isRoundResultRetrievable && !hasBeenRoundEndRegistered && (getMyUnitsNoRevealers()
+				.size() == 0 || getEnemyUnitsNoRevealers().size() == 0))
 				|| game.getFrameCount() > 7500) {
 			hasBeenRoundEndRegistered = true;
 			isRoundResultRetrievable = true;
@@ -356,7 +354,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 			isAttackInProgress.clear();
 			hasAttackOrderBeenGiven.clear();
 			isStepThroughEnabled = false;
-			
+
 			calculateScore();
 		}
 
@@ -441,14 +439,17 @@ public class Controller extends DefaultBWListener implements Runnable,
 		if (isAttacking(u)) {
 			return;
 		}
-		currentPotential = potentialCalculator.getPotential(u.getPosition());
+		double ownMaximumShootDistance = u.getType().groundWeapon().maxRange();
+		currentPotential = potentialCalculator.getPotential(u.getPosition(),
+				ownMaximumShootDistance);
 		if (u.getGroundWeaponCooldown() == 0 && currentPotential > 0) {
 			if (attackFirstEnemy(u)) {
 				return;
 			}
 		}
 		Position moveTo = potentialCalculator.getHighestPotentialPosition(
-				u.getPosition(), moveDirection, MOVE_DISTANCE);
+				u.getPosition(), moveDirection, MOVE_DISTANCE,
+				ownMaximumShootDistance);
 
 		// Moving this much past the point where we want to actually be.
 		// Unit acceleration and breaking causes it to lag behind the

@@ -45,7 +45,7 @@ public class Y extends GPNode
         final Problem problem)
         {
         DoubleData rd = ((DoubleData)(input));
-       // rd.x = ((ThesisProblem)problem).currentY;
+        rd.x = ((ThesisProblem)problem).currentY;
         }
     }
 
