@@ -51,6 +51,12 @@ public class Controller extends DefaultBWListener implements Runnable,
 	/** Determines the game speed in frames per second. */
 	final static int GAME_SPEED = 0;
 	/**
+	 * Determines the maximum length for a game (in frames). The game will be
+	 * restarted if it doesn't end before the maximum number of frames has
+	 * passed.
+	 */
+	final static int GAME_MAX_LENGTH = 7500;
+	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.
 	 */
@@ -59,7 +65,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * Determines if the StarCraft client should draw the game on the screen
 	 * every logical game frame. Disabling the GUI should speed the game up.
 	 */
-	final static boolean GUI_ON = false;
+	final static boolean GUI_ON = true;
 
 	/**
 	 * If the notification about a round end has been registered (the map used
@@ -256,6 +262,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 		hasMatchStarted = true;
 
 		hasBeenRoundEndRegistered = false;
+
+		isAttackInProgress.clear();
+		hasAttackOrderBeenGiven.clear();
 	}
 
 	/**
@@ -345,14 +354,13 @@ public class Controller extends DefaultBWListener implements Runnable,
 		// has been defeated.
 		if (game.getFrameCount() == 0)
 			return;
-		if ((!isRoundResultRetrievable && !hasBeenRoundEndRegistered && (getMyUnitsNoRevealers()
-				.size() == 0 || getEnemyUnitsNoRevealers().size() == 0))
-				|| game.getFrameCount() > 7500) {
+		if (!isRoundResultRetrievable
+				&& !hasBeenRoundEndRegistered
+				&& ((getMyUnitsNoRevealers().size() == 0 || getEnemyUnitsNoRevealers()
+						.size() == 0) || game.getFrameCount() > GAME_MAX_LENGTH)) {
 			hasBeenRoundEndRegistered = true;
 			isRoundResultRetrievable = true;
 
-			isAttackInProgress.clear();
-			hasAttackOrderBeenGiven.clear();
 			isStepThroughEnabled = false;
 
 			calculateScore();
