@@ -8,9 +8,12 @@ parent.0 = E:/Tiedostot/Workspace/OneDrive/Gradu/3rd party libraries/ecj/params/
 # put them here to be clear.
 
 gp.tc.size = 2
-gp.tc = ec.gp.GPTreeConstraints
-gp.tc.returns = nil
-gp.tc.init = ec.gp.koza.HalfBuilder
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.1 = ec.gp.GPTreeConstraints
+gp.tc.0.returns = nil
+gp.tc.0.init = ec.gp.koza.HalfBuilder
+gp.tc.1.returns = nil
+gp.tc.1.init = ec.gp.koza.HalfBuilder
 
 gp.tc.0.name = tc0
 gp.tc.0.fset = f1
@@ -85,7 +88,7 @@ pop.subpop.0.species.ind.numtrees = 2
 pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.0.tc = tc0
 pop.subpop.0.species.ind.tree.1 = ec.gp.GPTree
-pop.subpop.0.species.ind.tree.1.tc = tc0
+pop.subpop.0.species.ind.tree.1.tc = tc1
 
 # Print programs in results in c style rather than
 # lisp style.
