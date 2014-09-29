@@ -56,10 +56,10 @@ public class PotentialCalculator {
 	}
 
 	/**
-	 * Gets the potential for coordinates. <strike>The potential is calculated by
-	 * adding -(0.05 * enemyDistance - 5)^2 for each enemy unit. This potential
-	 * tries to keep a single unit at it's maximum attacking range from a single
-	 * enemy.</strike>
+	 * Gets the potential for coordinates. <strike>The potential is calculated
+	 * by adding -(0.05 * enemyDistance - 5)^2 for each enemy unit. This
+	 * potential tries to keep a single unit at it's maximum attacking range
+	 * from a single enemy.</strike>
 	 * 
 	 * Uses the potentialProvider if it was set. Otherwise uses the potential
 	 * function defined here (changes frequently during development).
@@ -118,8 +118,7 @@ public class PotentialCalculator {
 			} else {
 				try {
 					potential += potentialProvider.getPotential(enemyDistance,
-							u.getType().groundWeapon().maxRange(),
-							distancesFromEdges);
+							ownMaximumShootDistance, distancesFromEdges);
 				} catch (RemoteException e) {
 					System.err.println("Remote potential evaluation failed: ");
 					e.printStackTrace();
@@ -131,7 +130,9 @@ public class PotentialCalculator {
 
 	/**
 	 * Calculates the potential depending on proximity to a map edge.
-	 * @param x Unit's distance from map edge
+	 * 
+	 * @param x
+	 *            Unit's distance from map edge
 	 * @return The potential caused by the map edge.
 	 */
 	public double mapEdgePotential(double x) {
