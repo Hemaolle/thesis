@@ -38,6 +38,7 @@ public interface PotentialFunctionProvider extends Remote {
 	 * map edges.
 	 * 
 	 * TODO: Modify to use multiple enemy units.
+	 * @param distancesFromOwnUnits 
 	 * 
 	 * @param distanceFromEnemy
 	 *            Distance between the AI player's unit that the potential is
@@ -49,6 +50,6 @@ public interface PotentialFunctionProvider extends Remote {
 	 *             If something goes wrong with the remote function call.
 	 */
 	public double getPotential(double distancesFromEnemies[],
-			double ownMaximumShootDistance, double[] distancesFromEdges)
+			double[] distancesFromOwnUnits, double ownMaximumShootDistance, double[] distancesFromEdges)
 			throws RemoteException;
 }

@@ -21,8 +21,8 @@ public class TestPotentialFunctionProvider implements PotentialFunctionProvider 
 
 	@Override
 	public double getPotential(double[] distancesFromEnemies,
-			double ownMaximumShootDistance, double[] distancesFromEdges)
-			throws RemoteException {
+			double[] distancesFromOwnUnits, double ownMaximumShootDistance,
+			double[] distancesFromEdges) throws RemoteException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

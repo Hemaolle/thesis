@@ -7,18 +7,23 @@ parent.0 = E:/Tiedostot/Workspace/OneDrive/Gradu/3rd party libraries/ecj/params/
 # the next four items are already defined in koza.params, but we
 # put them here to be clear.
 
-gp.tc.size = 2
+gp.tc.size = 3
 gp.tc.0 = ec.gp.GPTreeConstraints
 gp.tc.1 = ec.gp.GPTreeConstraints
+gp.tc.2 = ec.gp.GPTreeConstraints
 gp.tc.0.returns = nil
 gp.tc.0.init = ec.gp.koza.HalfBuilder
 gp.tc.1.returns = nil
 gp.tc.1.init = ec.gp.koza.HalfBuilder
+gp.tc.2.returns = nil
+gp.tc.2.init = ec.gp.koza.HalfBuilder
 
 gp.tc.0.name = tc0
 gp.tc.0.fset = f1
 gp.tc.1.name = tc1
 gp.tc.1.fset = f0
+gp.tc.2.name = tc2
+gp.tc.2.fset = f0
 
 # We have one function set, of class GPFunctionSet
 gp.fs.size = 2

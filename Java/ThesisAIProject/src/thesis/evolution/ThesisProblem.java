@@ -185,6 +185,13 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 				stack, ((GPIndividual) ind), this);
 		return localInput.x;
 	}
+	
+	private double getOwnUnitPotential(double distance) {
+		currentX = distance;
+		((GPIndividual) ind).trees[2].child.eval(state, threadnum, localInput,
+				stack, ((GPIndividual) ind), this);
+		return localInput.x;
+	}
 
 	/**
 	 * Returns the potential for the map edges. This part of the potential
@@ -195,12 +202,12 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 * @return The potential for the map edges.
 	 */
 	private double getMapEdgePotential(double distanceFromEdge) {
-		double potential = 0;		
+		double potential = 0;
 		currentX = distanceFromEdge;
-		((GPIndividual) ind).trees[1].child.eval(state, threadnum,
-				localInput, stack, ((GPIndividual) ind), this);
+		((GPIndividual) ind).trees[1].child.eval(state, threadnum, localInput,
+				stack, ((GPIndividual) ind), this);
 		potential += localInput.x;
-		
+
 		return potential;
 	}
 
@@ -222,14 +229,19 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 * 
 	 */
 	public double getPotential(double[] distancesFromEnemies,
-			double ownMaximumShootDistance, double[] distancesFromEdges) {
+			double[] distancesFromOwnUnits, double ownMaximumShootDistance,
+			double[] distancesFromEdges) {
 		double potential = 0;
 		for (int i = 0; i < distancesFromEnemies.length; i++) {
-			potential += getEnemyPotential(distancesFromEnemies[i], ownMaximumShootDistance);
+			potential += getEnemyPotential(distancesFromEnemies[i],
+					ownMaximumShootDistance);
+		}
+		for (int i = 0; i < distancesFromOwnUnits.length; i++) {
+			potential += getOwnUnitPotential(distancesFromOwnUnits[i]);
 		}
 		for (int i = 0; i < distancesFromEdges.length; i++) {
 			potential += getMapEdgePotential(distancesFromEdges[i]);
 		}
 		return potential;
-	}
+	}	
 }

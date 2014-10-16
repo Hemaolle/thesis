@@ -448,16 +448,14 @@ public class Controller extends DefaultBWListener implements Runnable,
 			return;
 		}
 		double ownMaximumShootDistance = u.getType().groundWeapon().maxRange();
-		currentPotential = potentialCalculator.getPotential(u.getPosition(),
-				ownMaximumShootDistance);
+		currentPotential = potentialCalculator.getPotential(u.getPosition(), u);
 		if (u.getGroundWeaponCooldown() == 0 && currentPotential > 0) {
 			if (attackFirstEnemy(u)) {
 				return;
 			}
 		}
 		Position moveTo = potentialCalculator.getHighestPotentialPosition(
-				u.getPosition(), moveDirection, MOVE_DISTANCE,
-				ownMaximumShootDistance);
+				u.getPosition(), moveDirection, MOVE_DISTANCE, u);
 
 		// Moving this much past the point where we want to actually be.
 		// Unit acceleration and breaking causes it to lag behind the
