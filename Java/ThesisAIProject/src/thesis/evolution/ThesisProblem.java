@@ -194,14 +194,13 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 *            Distances from the 4 map edges.
 	 * @return The potential for the map edges.
 	 */
-	private double getMapEdgePotential(double[] distancesFromEdges) {
-		double potential = 0;
-		for (int i = 0; i < distancesFromEdges.length; i++) {
-			currentX = distancesFromEdges[i];
-			((GPIndividual) ind).trees[1].child.eval(state, threadnum,
-					localInput, stack, ((GPIndividual) ind), this);
-			potential += localInput.x;
-		}
+	private double getMapEdgePotential(double distanceFromEdge) {
+		double potential = 0;		
+		currentX = distanceFromEdge;
+		((GPIndividual) ind).trees[1].child.eval(state, threadnum,
+				localInput, stack, ((GPIndividual) ind), this);
+		potential += localInput.x;
+		
 		return potential;
 	}
 
@@ -222,11 +221,15 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 * Using the function from the individual currently being evaluated.
 	 * 
 	 */
-	public double getPotential(double distanceFromEnemy,
+	public double getPotential(double[] distancesFromEnemies,
 			double ownMaximumShootDistance, double[] distancesFromEdges) {
 		double potential = 0;
-		potential += getPotential(distanceFromEnemy, ownMaximumShootDistance);
-		potential += getMapEdgePotential(distancesFromEdges);
+		for (int i = 0; i < distancesFromEnemies.length; i++) {
+			potential += getEnemyPotential(distancesFromEnemies[i], ownMaximumShootDistance);
+		}
+		for (int i = 0; i < distancesFromEdges.length; i++) {
+			potential += getMapEdgePotential(distancesFromEdges[i]);
+		}
 		return potential;
 	}
 }

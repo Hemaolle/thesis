@@ -1,6 +1,8 @@
 package thesis.bot;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import thesis.bot.PosUtils;
 import thesis.rmi.PotentialFunctionProvider;
@@ -56,13 +58,9 @@ public class PotentialCalculator {
 	}
 
 	/**
-	 * Gets the potential for coordinates. <strike>The potential is calculated
-	 * by adding -(0.05 * enemyDistance - 5)^2 for each enemy unit. This
-	 * potential tries to keep a single unit at it's maximum attacking range
-	 * from a single enemy.</strike>
-	 * 
-	 * Uses the potentialProvider if it was set. Otherwise uses the potential
-	 * function defined here (changes frequently during development).
+	 * Gets the potential for coordinates. Uses the potentialProvider if it was
+	 * set. Otherwise uses the potential function defined here (changes
+	 * frequently during development).
 	 * 
 	 * @param x
 	 *            X coordinate
@@ -86,46 +84,71 @@ public class PotentialCalculator {
 
 		double[] distancesFromEdges = { distMapBottom, distMapTop, distMapLeft,
 				distMapRight };
+		double[] distancesFromEnemies = getEnemyDistances(x, y);
 
+		if (potentialProvider == null) {
+
+			// fast game
+			// potential = 0;
+
+			// original
+			// potential += -(0.05 * enemyDistance - 5)
+			// * (0.05 * enemyDistance - 5);
+
+			for (int j = 0; j < distancesFromEnemies.length; j++) {
+				potential += enemyPotential(distancesFromEnemies[j]);
+			}
+			potential += mapEdgePotential(distMapBottom);
+			potential += mapEdgePotential(distMapTop);
+			potential += mapEdgePotential(distMapLeft);
+			potential += mapEdgePotential(distMapRight);
+		} else {
+			try {
+				potential += potentialProvider.getPotential(
+						distancesFromEnemies, ownMaximumShootDistance,
+						distancesFromEdges);
+			} catch (RemoteException e) {
+				System.err.println("Remote potential evaluation failed: ");
+				e.printStackTrace();
+			}
+		}
+
+		return potential;
+	}
+
+	/**
+	 * Gets the distances of the enemy units from given position.
+	 * 
+	 * 
+	 * @param x
+	 *            X coordinate
+	 * @param y
+	 *            Y coordinate
+	 * @return Array of enemy unit distances from that location.
+	 */
+	private double[] getEnemyDistances(double x, double y) {
+		List<Unit> enemyUnits = bot.getEnemyUnitsNoRevealers();
+		double[] distancesFromEnemies = new double[enemyUnits.size()];
+		int i = 0;
 		for (Unit u : bot.getEnemyUnitsNoRevealers()) {
 			Position enemyPos = u.getPosition();
 			double xlen = enemyPos.getX() - x;
 			double ylen = enemyPos.getY() - y;
 			double enemyDistance = Math.sqrt(xlen * xlen + ylen * ylen);
-			if (potentialProvider == null) {
-
-				// fast game
-				// potential = 0;
-
-				// original
-				// potential += -(0.05 * enemyDistance - 5)
-				// * (0.05 * enemyDistance - 5);
-
-				// potential += 3 * (enemyDistance * enemyDistance); first
-				// evolution run
-				// potential += -(enemyDistance - 120) * (enemyDistance - 136);
-				// potential -= 1.0 / (0.0001 * distMapBottom);
-				// potential -= 1.0 / (0.0001 * distMapTop);
-				// potential -= 1.0 / (0.0001 * distMapLeft);
-				// potential -= 1.0 / (0.0001 * distMapRight);
-				// potential += ((enemyDistance - 96.4901227341802) /
-				// (enemyDistance * 191.22811092392067));
-				potential += -235.4179177051288;
-				potential += mapEdgePotential(distMapBottom);
-				potential += mapEdgePotential(distMapTop);
-				potential += mapEdgePotential(distMapLeft);
-				potential += mapEdgePotential(distMapRight);
-			} else {
-				try {
-					potential += potentialProvider.getPotential(enemyDistance,
-							ownMaximumShootDistance, distancesFromEdges);
-				} catch (RemoteException e) {
-					System.err.println("Remote potential evaluation failed: ");
-					e.printStackTrace();
-				}
-			}
+			distancesFromEnemies[i++] = enemyDistance;
 		}
-		return potential;
+		return distancesFromEnemies;
+	}
+
+	/**
+	 * Calculates the potential depending on proximity to a map edge.
+	 * 
+	 * @param x
+	 *            Unit's distance from an enemy unit.
+	 * @return The potential caused by the map edge.
+	 */
+	public double enemyPotential(double x) {
+		return 0;
 	}
 
 	/**

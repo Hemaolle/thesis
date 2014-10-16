@@ -14,15 +14,15 @@ public class TestPotentialFunctionProvider implements PotentialFunctionProvider 
 
 	@Override
 	public double getPotential(double distanceFromEnemy,
-			double ownMaximumShootDistance, double[] distancesFromEdges)
-			throws RemoteException {
+			double ownMaximumShootDistance) throws RemoteException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public double getPotential(double distanceFromEnemy,
-			double ownMaximumShootDistance) throws RemoteException {
+	public double getPotential(double[] distancesFromEnemies,
+			double ownMaximumShootDistance, double[] distancesFromEdges)
+			throws RemoteException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

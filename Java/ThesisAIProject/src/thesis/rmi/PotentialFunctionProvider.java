@@ -48,7 +48,7 @@ public interface PotentialFunctionProvider extends Remote {
 	 * @throws RemoteException
 	 *             If something goes wrong with the remote function call.
 	 */
-	public double getPotential(double distanceFromEnemy,
+	public double getPotential(double distancesFromEnemies[],
 			double ownMaximumShootDistance, double[] distancesFromEdges)
 			throws RemoteException;
 }
