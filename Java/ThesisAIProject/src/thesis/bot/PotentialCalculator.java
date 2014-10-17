@@ -1,11 +1,13 @@
 package thesis.bot;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import thesis.bot.PosUtils;
 import thesis.rmi.PotentialFunctionProvider;
 import bwapi.*;
+import bwta.BWTA;
 
 /**
  * Calculates the potential field that guides the movement of the bot. The
@@ -73,18 +75,11 @@ public class PotentialCalculator {
 		double ownMaximumShootDistance = u.getType().groundWeapon().maxRange();
 		double potential = 0;
 
-		// Multiply map width and height by tile size to get values in pixels.
-		double distMapBottom = bot.game.mapHeight() * 32 - y;
-		double distMapTop = y;
-		double distMapLeft = x;
-		double distMapRight = bot.game.mapWidth() * 32 - x;
+		Position nearestPoint = BWTA.getRegion(u.getPosition()).getPolygon().getNearestPoint(u.getPosition());
+		nearestPoint.getDistance(u.getPosition());		
+		double distMapEdge = nearestPoint.getDistance(u.getPosition());
 
-		// System.out.println("distMapBottom " + distMapBottom + " distMapTop "
-		// + distMapTop + " distMapLeft " + distMapLeft + " distMapRight " +
-		// distMapRight);
-
-		double[] distancesFromEdges = { distMapBottom, distMapTop, distMapLeft,
-				distMapRight };
+		double[] distancesFromEdges = { distMapEdge };
 		double[] distancesFromEnemies = getEnemyDistances(x, y);
 		double[] distancesFromOwnUnits = getOwnUnitDistances(x, y, u);
 
@@ -103,10 +98,7 @@ public class PotentialCalculator {
 			for (int j = 0; j < distancesFromOwnUnits.length; j++) {
 				potential += ownPotential(distancesFromOwnUnits[j]);
 			}
-			potential += mapEdgePotential(distMapBottom);
-			potential += mapEdgePotential(distMapTop);
-			potential += mapEdgePotential(distMapLeft);
-			potential += mapEdgePotential(distMapRight);
+			potential += mapEdgePotential(distMapEdge);
 		} else {
 			try {
 				potential += potentialProvider.getPotential(
@@ -134,7 +126,7 @@ public class PotentialCalculator {
 	 * @return Array of own unit distances from given location (without unit u).
 	 */
 	private double[] getOwnUnitDistances(double x, double y, Unit ignoreUnit) {
-		List<Unit> myUnits = bot.getMyUnitsNoRevealers();
+		List<Unit> myUnits = new ArrayList<Unit>(bot.getMyUnitsNoRevealers());
 		myUnits.remove(ignoreUnit);
 		return getUnitDistances(x, y, myUnits);
 	}
@@ -225,6 +217,7 @@ public class PotentialCalculator {
 		for (int n = -1; n <= 1; n++) {
 			for (int m = -1; m <= 1; m++) {
 				double i = m;
+
 				double j = n;
 
 				/*

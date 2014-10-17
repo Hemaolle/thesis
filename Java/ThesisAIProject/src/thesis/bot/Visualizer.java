@@ -1,8 +1,11 @@
 package thesis.bot;
 
 import java.util.HashMap;
+import java.util.List;
 
 import bwapi.*;
+import bwta.Region;
+import bwta.*;
 
 /**
  * Handles the visualizations on screen during the gameplay for the AI client.
@@ -57,7 +60,7 @@ public class Visualizer {
 			// System.out.println("Distance between units: " +
 			// enemyPosition.getPDistance(myPosition));
 		}
-	}
+	}	
 
 	/**
 	 * Visualize the destination/target of the unit. If the unit is attacking,

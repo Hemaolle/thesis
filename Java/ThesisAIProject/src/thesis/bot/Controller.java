@@ -8,6 +8,7 @@ import java.util.List;
 import thesis.rmi.PotentialFunctionProvider;
 import thesis.rmi.RemoteBotInterface;
 import bwapi.*;
+import bwta.*;
 
 // TODO: Add more objects that generate potential fields.
 /**
@@ -43,13 +44,13 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * potential values of the points around an unit on the game window. Also
 	 * enables graphical visualizations.
 	 */
-	final static boolean DEBUG_INFO = true;
+	final static boolean DEBUG_INFO = false;
 	/**
 	 * The maximum distance of the move command from the unit position.
 	 */
 	final static int MOVE_DISTANCE = 45;
 	/** Determines the game speed in frames per second. */
-	final static int GAME_SPEED = 10;
+	final static int GAME_SPEED = 0;
 	/**
 	 * Determines the maximum length for a game (in frames). The game will be
 	 * restarted if it doesn't end before the maximum number of frames has
@@ -267,6 +268,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 		isAttackInProgress.clear();
 		hasAttackOrderBeenGiven.clear();
+		
+		BWTA.readMap();
+		BWTA.analyze();
 	}
 
 	/**
@@ -278,6 +282,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	public void onFrame() {
 		cacheUnits();
 		populateUnitHashMaps();
+		
 		// Comment: tried to wait for the first request from evolution
 		// while (!isStarted) {
 		// try {
@@ -297,23 +302,16 @@ public class Controller extends DefaultBWListener implements Runnable,
 		}
 		if (Thread.currentThread().isInterrupted()) {
 			game.leaveGame();
-		}
-
+		}		
 		game.drawTextScreen(0, 20, BOT_NAME);
 		checkForRoundEnd();
 		visualizer.highlightUnits();
-		System.out.println("getmyunits size: " + getMyUnitsNoRevealers().size());		
-		int i = 0;
-		System.out.println("Startforloop");
 		for (Unit u : myUnitsNoRevealers) {
 			handleUnit(u);
-			System.out.println("Looping number: " + i);
-			i++;
 		}
 	}
 
 	private void cacheUnits() {
-		System.out.println("Cache units");
 		myUnitsNoRevealers = removeRevealersFromUnitSet(game.self().getUnits());
 		enemyUnitsNoRevealers = removeRevealersFromUnitSet(game.enemy()
 				.getUnits());
