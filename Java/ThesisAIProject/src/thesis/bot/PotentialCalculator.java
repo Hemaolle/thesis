@@ -184,7 +184,7 @@ public class PotentialCalculator {
 	 * @return The potential caused by the enemy unit.
 	 */
 	public double enemyPotential(double x) {
-		return 0;
+		return 309.17765473823886 * 365.38753697382253;
 	}
 	
 	/**
@@ -195,7 +195,7 @@ public class PotentialCalculator {
 	 * @return The potential caused by the own unit.
 	 */
 	public double ownPotential(double x) {
-		return 0;
+		return ((249.7439773635689 / -117.80470067152851) - 74.99324876403239) - 74.99324876403239;
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class PotentialCalculator {
 	 * @return The potential caused by the map edge.
 	 */
 	public double mapEdgePotential(double x) {
-		return (((-371.5028023902601 - -45.14319119960675) + x) / x) * 110.42600238815817;
+		return 272.3407434864084;
 	}
 
 	/**

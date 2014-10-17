@@ -43,13 +43,13 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * potential values of the points around an unit on the game window. Also
 	 * enables graphical visualizations.
 	 */
-	final static boolean DEBUG_INFO = false;
+	final static boolean DEBUG_INFO = true;
 	/**
 	 * The maximum distance of the move command from the unit position.
 	 */
 	final static int MOVE_DISTANCE = 45;
 	/** Determines the game speed in frames per second. */
-	final static int GAME_SPEED = 0;
+	final static int GAME_SPEED = 10;
 	/**
 	 * Determines the maximum length for a game (in frames). The game will be
 	 * restarted if it doesn't end before the maximum number of frames has
@@ -66,7 +66,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * every logical game frame. Disabling the GUI should speed the game up.
 	 */
 	final static boolean GUI_ON = true;
-
+	final static int MAX_SCORE = 1620;
 	/**
 	 * If the notification about a round end has been registered (the map used
 	 * should set minerals to 500 to notify about a round end).
@@ -220,6 +220,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 			Thread.sleep(100);
 			if (isRoundResultRetrievable) {
 				isRoundResultRetrievable = false;
+				System.out.println("Max score " + MAX_SCORE);
+				System.out.println("Score: " + score);
 				return score;
 			}
 		}
@@ -300,13 +302,18 @@ public class Controller extends DefaultBWListener implements Runnable,
 		game.drawTextScreen(0, 20, BOT_NAME);
 		checkForRoundEnd();
 		visualizer.highlightUnits();
-
-		for (Unit u : getMyUnitsNoRevealers()) {
+		System.out.println("getmyunits size: " + getMyUnitsNoRevealers().size());		
+		int i = 0;
+		System.out.println("Startforloop");
+		for (Unit u : myUnitsNoRevealers) {
 			handleUnit(u);
+			System.out.println("Looping number: " + i);
+			i++;
 		}
 	}
 
 	private void cacheUnits() {
+		System.out.println("Cache units");
 		myUnitsNoRevealers = removeRevealersFromUnitSet(game.self().getUnits());
 		enemyUnitsNoRevealers = removeRevealersFromUnitSet(game.enemy()
 				.getUnits());
@@ -391,6 +398,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 			score -= u.getShields();
 			score -= u.getHitPoints();
 		}
+		score -= MAX_SCORE;
+		score *= -1;
 	}
 
 	/**
@@ -439,31 +448,34 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 *            The unit to be handled.
 	 */
 	private void handleUnit(Unit u) {
-		double currentPotential;
-		double[] potentials = potentialCalculator.getPotentialsAround(u);
-		Position moveDirection = potentialCalculator
-				.getMoveDirection(potentials);
-		visualizer.drawPotentialValues(potentials);
-		if (isAttacking(u)) {
-			return;
-		}
-		double ownMaximumShootDistance = u.getType().groundWeapon().maxRange();
-		currentPotential = potentialCalculator.getPotential(u.getPosition(), u);
-		if (u.getGroundWeaponCooldown() == 0 && currentPotential > 0) {
-			if (attackFirstEnemy(u)) {
+		Position moveTo = null;
+		try {
+			double currentPotential;
+			double[] potentials = potentialCalculator.getPotentialsAround(u);
+			Position moveDirection = potentialCalculator
+					.getMoveDirection(potentials);
+			visualizer.drawPotentialValues(potentials);
+			if (isAttacking(u)) {
 				return;
+			}			
+			currentPotential = potentialCalculator.getPotential(
+					u.getPosition(), u);
+			if (u.getGroundWeaponCooldown() == 0 && currentPotential > 0) {
+				if (attackFirstEnemy(u)) {
+					return;
+				}
 			}
+			moveTo = potentialCalculator.getHighestPotentialPosition(
+					u.getPosition(), moveDirection, MOVE_DISTANCE, u);
+
+			// Moving this much past the point where we want to actually be.
+			// Unit acceleration and breaking causes it to lag behind the
+			// position of the move command given.
+			u.move(offsetPosition(moveTo, moveDirection, 20), false);
+		} finally {
+			visualizer.visualizeDestination(u, moveTo,
+					getHasAttackOrderBeenGiven(u) || getIsAttackInProgress(u));
 		}
-		Position moveTo = potentialCalculator.getHighestPotentialPosition(
-				u.getPosition(), moveDirection, MOVE_DISTANCE, u);
-
-		// Moving this much past the point where we want to actually be.
-		// Unit acceleration and breaking causes it to lag behind the
-		// position of the move command given.
-		u.move(offsetPosition(moveTo, moveDirection, 20), false);
-
-		visualizer.visualizeDestination(u, moveTo,
-				getHasAttackOrderBeenGiven(u) || getIsAttackInProgress(u));
 	}
 
 	/**
@@ -553,7 +565,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 				hasAttackOrderBeenGiven.put(u.getID(), true);
 				u.attack(eu, false);
 				attack = true;
-				visualizer.attackTarget = eu;
+				visualizer.setAttackTarget(u, eu);
 			}
 		}
 		return attack;

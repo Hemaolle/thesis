@@ -78,7 +78,7 @@ pop.subpop.0.size =			32
 generations =				26
 print-params = true
 
-evalthreads = 4
+evalthreads = 6
  
 seed.0 = time
 seed.1 = time
@@ -89,11 +89,13 @@ seed.5 = time
 seed.6 = time
 seed.7 = time
 
-pop.subpop.0.species.ind.numtrees = 2
+pop.subpop.0.species.ind.numtrees = 3
 pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.0.tc = tc0
 pop.subpop.0.species.ind.tree.1 = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.1.tc = tc1
+pop.subpop.0.species.ind.tree.2 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.2.tc = tc2
 
 # Print programs in results in c style rather than
 # lisp style.

@@ -125,12 +125,7 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 				System.err.println("A remote exception while evaluating: ");
 				e.printStackTrace();
 				throw new Error();
-			}
-
-			// TODO: Calculating some standard fitness value should probably be
-			// done on the Controller side.
-			fitness -= 180;
-			fitness *= -1;
+			}			
 
 			if (fitness < 0.001)
 				hits++;
