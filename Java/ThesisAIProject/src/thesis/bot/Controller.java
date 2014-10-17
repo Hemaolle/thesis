@@ -48,7 +48,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	/**
 	 * The maximum distance of the move command from the unit position.
 	 */
-	final static int MOVE_DISTANCE = 45;
+	final static int MOVE_DISTANCE = 15;
 	/** Determines the game speed in frames per second. */
 	final static int GAME_SPEED = 0;
 	/**
