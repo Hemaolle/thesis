@@ -71,14 +71,14 @@ eval.problem = thesis.evolution.ThesisProblem
 eval.problem.data = thesis.evolution.DoubleData
 # How many times evaluation of an individual should be repeated
 # Using the average fitness.
-eval.problem.repeated-evaluations = 10
+eval.problem.repeated-evaluations = 1
 
 # own additions
-pop.subpop.0.size =			32
+pop.subpop.0.size =			3
 generations =				26
 print-params = true
 
-evalthreads = 6
+evalthreads = 3
  
 seed.0 = time
 seed.1 = time
@@ -106,6 +106,8 @@ stat = ec.gp.koza.KozaShortStatistics
 stat.do-size = true
 stat.do-time = true
 
-stat.num-children = 1
+stat.num-children = 2
 stat.child.0 = ec.simple.SimpleStatistics
 stat.child.0.file = $out2.stat
+stat.child.1 = thesis.evolution.PrintEntirePopulationStatistics
+stat.child.1.file = $out3.stat
