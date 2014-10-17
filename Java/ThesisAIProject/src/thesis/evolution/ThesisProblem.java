@@ -125,7 +125,7 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 				System.err.println("A remote exception while evaluating: ");
 				e.printStackTrace();
 				throw new Error();
-			}			
+			}
 
 			if (fitness < 0.001)
 				hits++;
@@ -163,13 +163,13 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	}
 
 	/**
-	 * Returns the potential for the enemy. This part of the potential function
-	 * is evolved in tree 0. 0.
-	 * 
-	 * TODO: modify to use multiple enemies.
+	 * Returns the potential for an enemy unit. This part of the potential
+	 * function is evolved in tree 0.
 	 * 
 	 * @param distanceFromEnemy
 	 *            Player unit's distance from the enemy unit
+	 * @param ownMaximumShootDistance
+	 * 			  The own unit's maximum shooting distance.
 	 * @return The potential for the enemy.
 	 */
 	private double getEnemyPotential(double distanceFromEnemy,
@@ -180,7 +180,34 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 				stack, ((GPIndividual) ind), this);
 		return localInput.x;
 	}
-	
+
+	/**
+	 * Returns the potential for an enemy unit when the own unit is on cooldown.
+	 * This part of the potential function is evolved in tree 3.
+	 * 
+	 * @param distanceFromEnemy
+	 *            Player unit's distance from the enemy unit
+	 * @param ownMaximumShootDistance
+	 * 			  The own unit's maximum shooting distance.
+	 * @return The potential for the enemy.
+	 */
+	private double getenemyPotentialWhenOnCooldown(double distanceFromEnemy,
+			double ownMaximumShootDistance) {
+		currentX = distanceFromEnemy;
+		currentY = ownMaximumShootDistance;
+		((GPIndividual) ind).trees[3].child.eval(state, threadnum, localInput,
+				stack, ((GPIndividual) ind), this);
+		return localInput.x;
+	}
+
+	/**
+	 * Returns the potential for an own unit. This part of the potential
+	 * function is evolved in tree 2.
+	 * 
+	 * @param distance
+	 *            Player unit's distance from an own unit
+	 * @return The potential for the enemy.
+	 */
 	private double getOwnUnitPotential(double distance) {
 		currentX = distance;
 		((GPIndividual) ind).trees[2].child.eval(state, threadnum, localInput,
@@ -225,11 +252,18 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 */
 	public double getPotential(double[] distancesFromEnemies,
 			double[] distancesFromOwnUnits, double ownMaximumShootDistance,
-			double[] distancesFromEdges) {
+			double[] distancesFromEdges, boolean onCooldown) {
 		double potential = 0;
-		for (int i = 0; i < distancesFromEnemies.length; i++) {
-			potential += getEnemyPotential(distancesFromEnemies[i],
-					ownMaximumShootDistance);
+		if (!onCooldown)
+			for (int i = 0; i < distancesFromEnemies.length; i++) {
+				potential += getEnemyPotential(distancesFromEnemies[i],
+						ownMaximumShootDistance);
+			}
+		else {
+			for (int i = 0; i < distancesFromEnemies.length; i++) {
+				potential += getenemyPotentialWhenOnCooldown(
+						distancesFromEnemies[i], ownMaximumShootDistance);
+			}
 		}
 		for (int i = 0; i < distancesFromOwnUnits.length; i++) {
 			potential += getOwnUnitPotential(distancesFromOwnUnits[i]);
@@ -238,5 +272,5 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 			potential += getMapEdgePotential(distancesFromEdges[i]);
 		}
 		return potential;
-	}	
+	}
 }

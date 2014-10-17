@@ -7,16 +7,19 @@ parent.0 = E:/Tiedostot/Workspace/OneDrive/Gradu/3rd party libraries/ecj/params/
 # the next four items are already defined in koza.params, but we
 # put them here to be clear.
 
-gp.tc.size = 3
+gp.tc.size = 4
 gp.tc.0 = ec.gp.GPTreeConstraints
 gp.tc.1 = ec.gp.GPTreeConstraints
 gp.tc.2 = ec.gp.GPTreeConstraints
+gp.tc.3 = ec.gp.GPTreeConstraints
 gp.tc.0.returns = nil
 gp.tc.0.init = ec.gp.koza.HalfBuilder
 gp.tc.1.returns = nil
 gp.tc.1.init = ec.gp.koza.HalfBuilder
 gp.tc.2.returns = nil
 gp.tc.2.init = ec.gp.koza.HalfBuilder
+gp.tc.3.returns = nil
+gp.tc.3.init = ec.gp.koza.HalfBuilder
 
 gp.tc.0.name = tc0
 gp.tc.0.fset = f1
@@ -24,6 +27,8 @@ gp.tc.1.name = tc1
 gp.tc.1.fset = f0
 gp.tc.2.name = tc2
 gp.tc.2.fset = f0
+gp.tc.3.name = tc3
+gp.tc.3.fset = f1
 
 # We have one function set, of class GPFunctionSet
 gp.fs.size = 2
@@ -89,13 +94,15 @@ seed.5 = time
 seed.6 = time
 seed.7 = time
 
-pop.subpop.0.species.ind.numtrees = 3
+pop.subpop.0.species.ind.numtrees = 4
 pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.0.tc = tc0
 pop.subpop.0.species.ind.tree.1 = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.1.tc = tc1
 pop.subpop.0.species.ind.tree.2 = ec.gp.GPTree
 pop.subpop.0.species.ind.tree.2.tc = tc2
+pop.subpop.0.species.ind.tree.3 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.3.tc = tc3
 
 # Print programs in results in c style rather than
 # lisp style.

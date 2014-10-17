@@ -45,11 +45,13 @@ public interface PotentialFunctionProvider extends Remote {
 	 *            being calculated for and the enemy unit.
 	 * @param distancesFromEdges
 	 *            Current unit's distance from the 4 map edges.
+	 * @param onCooldown 
 	 * @return The potential value.
 	 * @throws RemoteException
 	 *             If something goes wrong with the remote function call.
 	 */
 	public double getPotential(double distancesFromEnemies[],
-			double[] distancesFromOwnUnits, double ownMaximumShootDistance, double[] distancesFromEdges)
+			double[] distancesFromOwnUnits, double ownMaximumShootDistance,
+			double[] distancesFromEdges, boolean onCooldown)
 			throws RemoteException;
 }

@@ -75,10 +75,12 @@ public class PotentialCalculator {
 		double ownMaximumShootDistance = u.getType().groundWeapon().maxRange();
 		double potential = 0;
 
-		Position nearestPoint = BWTA.getRegion(u.getPosition()).getPolygon().getNearestPoint(u.getPosition());
-		nearestPoint.getDistance(u.getPosition());		
+		Position nearestPoint = BWTA.getRegion(u.getPosition()).getPolygon()
+				.getNearestPoint(u.getPosition());
+		nearestPoint.getDistance(u.getPosition());
 		double distMapEdge = nearestPoint.getDistance(u.getPosition());
 
+		boolean onCooldown = !(u.getGroundWeaponCooldown() == 0);
 		double[] distancesFromEdges = { distMapEdge };
 		double[] distancesFromEnemies = getEnemyDistances(x, y);
 		double[] distancesFromOwnUnits = getOwnUnitDistances(x, y, u);
@@ -91,10 +93,16 @@ public class PotentialCalculator {
 			// original
 			// potential += -(0.05 * enemyDistance - 5)
 			// * (0.05 * enemyDistance - 5);
-
-			for (int j = 0; j < distancesFromEnemies.length; j++) {
-				potential += enemyPotential(distancesFromEnemies[j]);
-			}
+			if (!onCooldown)
+				for (int j = 0; j < distancesFromEnemies.length; j++) {
+					potential += enemyPotential(distancesFromEnemies[j],
+							ownMaximumShootDistance);
+				}
+			else
+				for (int j = 0; j < distancesFromEnemies.length; j++) {
+					potential += enemyPotentialWhenOnCooldown(
+							distancesFromEnemies[j], ownMaximumShootDistance);
+				}
 			for (int j = 0; j < distancesFromOwnUnits.length; j++) {
 				potential += ownPotential(distancesFromOwnUnits[j]);
 			}
@@ -103,7 +111,7 @@ public class PotentialCalculator {
 			try {
 				potential += potentialProvider.getPotential(
 						distancesFromEnemies, distancesFromOwnUnits,
-						ownMaximumShootDistance, distancesFromEdges);
+						ownMaximumShootDistance, distancesFromEdges, onCooldown);
 			} catch (RemoteException e) {
 				System.err.println("Remote potential evaluation failed: ");
 				e.printStackTrace();
@@ -175,10 +183,22 @@ public class PotentialCalculator {
 	 *            Unit's distance from an enemy unit.
 	 * @return The potential caused by the enemy unit.
 	 */
-	public double enemyPotential(double x) {
+	public double enemyPotential(double x, double ownMSD) {
 		return 309.17765473823886 * 365.38753697382253;
 	}
-	
+
+	/**
+	 * Calculates the potential depending on proximity to an enemy unit when the
+	 * own unit is on cooldown.
+	 * 
+	 * @param x
+	 *            Unit's distance from an enemy unit.
+	 * @return The potential caused by the enemy unit.
+	 */
+	public double enemyPotentialWhenOnCooldown(double x, double ownMSD) {
+		return 309.17765473823886 * 365.38753697382253;
+	}
+
 	/**
 	 * Calculates the potential depending on proximity to an own unit.
 	 * 
