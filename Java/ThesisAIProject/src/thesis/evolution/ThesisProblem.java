@@ -254,17 +254,24 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 			double[] distancesFromOwnUnits, double ownMaximumShootDistance,
 			double[] distancesFromEdges, boolean onCooldown) {
 		double potential = 0;
+		double maxPotential = -Double.MAX_VALUE;
+		double currentPotential;
 		if (!onCooldown)
 			for (int i = 0; i < distancesFromEnemies.length; i++) {
-				potential += getEnemyPotential(distancesFromEnemies[i],
+				currentPotential = getEnemyPotential(distancesFromEnemies[i],
 						ownMaximumShootDistance);
+				if (maxPotential < currentPotential)
+					maxPotential = currentPotential;
 			}
 		else {
 			for (int i = 0; i < distancesFromEnemies.length; i++) {
-				potential += getenemyPotentialWhenOnCooldown(
+				currentPotential = getenemyPotentialWhenOnCooldown(
 						distancesFromEnemies[i], ownMaximumShootDistance);
+				if (maxPotential < currentPotential)
+					maxPotential = currentPotential;
 			}
 		}
+		potential += maxPotential;
 		for (int i = 0; i < distancesFromOwnUnits.length; i++) {
 			potential += getOwnUnitPotential(distancesFromOwnUnits[i]);
 		}

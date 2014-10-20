@@ -92,17 +92,24 @@ public class PotentialCalculator {
 
 			// original
 			// potential += -(0.05 * enemyDistance - 5)
-			// * (0.05 * enemyDistance - 5);
+			// * (0.05 * enemyDistance - 5);			
+			double maxPotential = -Double.MAX_VALUE;
+			double currentPotential;		
 			if (!onCooldown)
 				for (int j = 0; j < distancesFromEnemies.length; j++) {
-					potential += enemyPotential(distancesFromEnemies[j],
+					currentPotential = enemyPotential(distancesFromEnemies[j],
 							ownMaximumShootDistance);
+					if (maxPotential < currentPotential)
+						maxPotential = currentPotential;
 				}
 			else
 				for (int j = 0; j < distancesFromEnemies.length; j++) {
-					potential += enemyPotentialWhenOnCooldown(
+					currentPotential = enemyPotentialWhenOnCooldown(
 							distancesFromEnemies[j], ownMaximumShootDistance);
+					if (maxPotential < currentPotential)
+						maxPotential = currentPotential;
 				}
+			potential += maxPotential;
 			for (int j = 0; j < distancesFromOwnUnits.length; j++) {
 				potential += ownPotential(distancesFromOwnUnits[j]);
 			}
