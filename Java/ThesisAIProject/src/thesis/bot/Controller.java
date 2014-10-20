@@ -56,7 +56,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * restarted if it doesn't end before the maximum number of frames has
 	 * passed.
 	 */
-	final static int GAME_MAX_LENGTH = 7500;
+	final static int GAME_MAX_LENGTH = 5000;
 	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.

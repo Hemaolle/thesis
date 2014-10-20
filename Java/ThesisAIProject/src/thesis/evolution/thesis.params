@@ -76,14 +76,14 @@ eval.problem = thesis.evolution.ThesisProblem
 eval.problem.data = thesis.evolution.DoubleData
 # How many times evaluation of an individual should be repeated
 # Using the average fitness.
-eval.problem.repeated-evaluations = 1
+eval.problem.repeated-evaluations = 10
 
 # own additions
-pop.subpop.0.size =			3
+pop.subpop.0.size =			128
 generations =				26
 print-params = true
 
-evalthreads = 3
+evalthreads = 8
  
 seed.0 = time
 seed.1 = time
@@ -118,3 +118,7 @@ stat.child.0 = ec.simple.SimpleStatistics
 stat.child.0.file = $out2.stat
 stat.child.1 = thesis.evolution.PrintEntirePopulationStatistics
 stat.child.1.file = $out3.stat
+
+checkpoint = true
+checkpoint-modulo = 1
+checkpoint-directory = /checkpoints/
