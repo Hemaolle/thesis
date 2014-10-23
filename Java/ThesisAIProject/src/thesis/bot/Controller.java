@@ -56,7 +56,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * restarted if it doesn't end before the maximum number of frames has
 	 * passed.
 	 */
-	final static int GAME_MAX_LENGTH = 5000;
+	final static int GAME_MAX_LENGTH = 4000;
 	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.
@@ -67,7 +67,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * every logical game frame. Disabling the GUI should speed the game up.
 	 */
 	final static boolean GUI_ON = true;
-	final static int MAX_SCORE = 1620;
+	final static int MAX_SCORE = 22950;
 	/**
 	 * If the notification about a round end has been registered (the map used
 	 * should set minerals to 500 to notify about a round end).
@@ -388,14 +388,24 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	private void calculateScore() {
 		score = 0;
-		for (Unit u : getMyUnitsNoRevealers()) {
-			score += u.getShields();
-			score += u.getHitPoints();
+		score += game.self().getUnitScore();
+		score += game.self().getKillScore();
+		score -= game.enemy().getKillScore();		
+		int totalOwnHitpointsShieldsLeft = 0;
+		if (!(game.getFrameCount() > GAME_MAX_LENGTH))
+		{
+			totalOwnHitpointsShieldsLeft = 0;
+			for (Unit u : getMyUnitsNoRevealers()) {
+				totalOwnHitpointsShieldsLeft += u.getShields();
+				totalOwnHitpointsShieldsLeft += u.getHitPoints();
+			}
+			totalOwnHitpointsShieldsLeft *= 10;
+			score += totalOwnHitpointsShieldsLeft;
 		}
-		for (Unit u : getEnemyUnitsNoRevealers()) {
-			score -= u.getShields();
-			score -= u.getHitPoints();
-		}
+//		System.out.println("Unit score: " + game.self().getUnitScore() + " Enemy kill score: " + game.enemy().getKillScore());
+//		System.out.println("Own unit count: " + getMyUnitsNoRevealers().size() + " Enemy unit count: " + getEnemyUnitsNoRevealers().size());
+//		System.out.println("TotalOwnHitpointsShieldsLeft: " + totalOwnHitpointsShieldsLeft);
+//		System.out.println("Score: " + score);
 		score -= MAX_SCORE;
 		score *= -1;
 	}
