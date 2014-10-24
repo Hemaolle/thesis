@@ -31,27 +31,31 @@ public interface PotentialFunctionProvider extends Remote {
 	 *             If something goes wrong with the remote function call.
 	 */
 	public double getPotential(double distanceFromEnemy,
-			double ownMaximumShootDistance) throws RemoteException;
+			double ownMaximumShootDistance, double relativeHP) throws RemoteException;
 
 	/**
 	 * Returns the potential based on the distance from one enemy unit and the
 	 * map edges.
 	 * 
 	 * TODO: Modify to use multiple enemy units.
-	 * @param distancesFromOwnUnits 
+	 * 
+	 * @param distancesFromOwnUnits
 	 * 
 	 * @param distanceFromEnemy
 	 *            Distance between the AI player's unit that the potential is
 	 *            being calculated for and the enemy unit.
 	 * @param distancesFromEdges
 	 *            Current unit's distance from the 4 map edges.
-	 * @param onCooldown 
+	 * @param onCooldown
+	 *            Indicates if the unit is on cooldown.
+	 * @param relativeHP
+	 *            Unit's HP amount relative to other own units.
 	 * @return The potential value.
 	 * @throws RemoteException
 	 *             If something goes wrong with the remote function call.
 	 */
 	public double getPotential(double distancesFromEnemies[],
 			double[] distancesFromOwnUnits, double ownMaximumShootDistance,
-			double[] distancesFromEdges, boolean onCooldown)
+			double[] distancesFromEdges, boolean onCooldown, double relativeHP)
 			throws RemoteException;
 }

@@ -74,6 +74,7 @@ public class PotentialCalculator {
 	private double getPotential(double x, double y, Unit u) {
 		double ownMaximumShootDistance = u.getType().groundWeapon().maxRange();
 		double potential = 0;
+		double relativeHP = bot.getRelativeHp(u);
 
 		Position nearestPoint = BWTA.getRegion(u.getPosition()).getPolygon()
 				.getNearestPoint(u.getPosition());
@@ -92,9 +93,9 @@ public class PotentialCalculator {
 
 			// original
 			// potential += -(0.05 * enemyDistance - 5)
-			// * (0.05 * enemyDistance - 5);			
+			// * (0.05 * enemyDistance - 5);
 			double maxPotential = -Double.MAX_VALUE;
-			double currentPotential;		
+			double currentPotential;
 			if (!onCooldown)
 				for (int j = 0; j < distancesFromEnemies.length; j++) {
 					currentPotential = enemyPotential(distancesFromEnemies[j],
@@ -118,7 +119,8 @@ public class PotentialCalculator {
 			try {
 				potential += potentialProvider.getPotential(
 						distancesFromEnemies, distancesFromOwnUnits,
-						ownMaximumShootDistance, distancesFromEdges, onCooldown);
+						ownMaximumShootDistance, distancesFromEdges,
+						onCooldown, relativeHP);
 			} catch (RemoteException e) {
 				System.err.println("Remote potential evaluation failed: ");
 				e.printStackTrace();
@@ -191,7 +193,8 @@ public class PotentialCalculator {
 	 * @return The potential caused by the enemy unit.
 	 */
 	public double enemyPotential(double x, double ownMSD) {
-		return 309.17765473823886 * 365.38753697382253;
+		return ((((ownMSD - x) / (-20.060897261620767 / x)) + ((-13.561011376251315 * x) / (124.02884198347397 * x))) / (((ownMSD * -6.799291633435303) * (ownMSD / 16.57640825303588)) - (((ownMSD * -6.799291633435303) * (ownMSD / 16.57640825303588)) - (((x - x) - (((ownMSD + x) * ownMSD) / ((ownMSD * ownMSD) + (x - ownMSD)))) - (ownMSD - -49.58157106169614)))))
+				- ((((ownMSD + x) * ownMSD) / ((ownMSD * ownMSD) + (x - ownMSD))) - (((ownMSD - ownMSD) - (ownMSD / 477.07602431436385)) * ((x + ownMSD) + (x + 75.45597006942614))));
 	}
 
 	/**
@@ -203,7 +206,8 @@ public class PotentialCalculator {
 	 * @return The potential caused by the enemy unit.
 	 */
 	public double enemyPotentialWhenOnCooldown(double x, double ownMSD) {
-		return 309.17765473823886 * 365.38753697382253;
+		return ((368.72076439707496 * x) / (ownMSD - -479.66266097104307))
+				* (((368.72076439707496 * (368.72076439707496 * x)) / (ownMSD - -479.66266097104307)) + ownMSD);
 	}
 
 	/**
@@ -214,7 +218,8 @@ public class PotentialCalculator {
 	 * @return The potential caused by the own unit.
 	 */
 	public double ownPotential(double x) {
-		return ((249.7439773635689 / -117.80470067152851) - 74.99324876403239) - 74.99324876403239;
+		return ((((x / x) + 311.95614217155935) + 311.95614217155935) * x)
+				/ (((x + x) + (x / x)) - (-211.77380603444163 / x));
 	}
 
 	/**
@@ -225,7 +230,7 @@ public class PotentialCalculator {
 	 * @return The potential caused by the map edge.
 	 */
 	public double mapEdgePotential(double x) {
-		return 272.3407434864084;
+		return x;
 	}
 
 	/**

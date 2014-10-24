@@ -1,9 +1,14 @@
 package thesis.bot;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import thesis.rmi.PotentialFunctionProvider;
 import thesis.rmi.RemoteBotInterface;
@@ -56,7 +61,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * restarted if it doesn't end before the maximum number of frames has
 	 * passed.
 	 */
-	final static int GAME_MAX_LENGTH = 4000;
+	final static int GAME_MAX_LENGTH = 1300;
 	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.
@@ -83,6 +88,10 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * finished. The key is the unit ID.
 	 */
 	HashMap<Integer, Boolean> hasAttackOrderBeenGiven = new HashMap<Integer, Boolean>();
+	/**
+	 * Holds the unit's HP value relative to group's average.
+	 */
+	HashMap<Unit, Double> relativeHps = new HashMap<Unit, Double>();
 	/**
 	 * If enabled, the game stops in every frame and only proceeds by pressing
 	 * enter in the command line.
@@ -117,6 +126,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	Game game;
 	List<Unit> myUnitsNoRevealers = new ArrayList<Unit>();
 	List<Unit> enemyUnitsNoRevealers = new ArrayList<Unit>();
+	private String name;
 
 	/**
 	 * Creates the AI client and gets results from it indefinitely.
@@ -125,7 +135,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 *             If interrupted.
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		Controller client = new Controller();
+		Controller client = new Controller("Default");
 		int i = 1;
 		while (true) {
 			System.out.println("Round " + i + ". Score: "
@@ -138,7 +148,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 	/**
 	 * Instantiates the JNI-BWAPI interface and connects to BWAPI.
 	 */
-	public Controller() {
+	public Controller(String name) {
+		this.name = name;
 		mirror.getModule().setEventListener(this);
 		potentialCalculator = new PotentialCalculator(this);
 		WaitForConnection();
@@ -184,7 +195,6 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * @return Score for the round.
 	 */
 	public int getRoundScore(PotentialFunctionProvider potentialProvider) {
-		System.out.println("Get round score (with potential provider) called");
 		hasEvolutionStarted = true;
 		potentialCalculator.setPotentialProvider(potentialProvider);
 		while (true) {
@@ -249,7 +259,6 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	@Override
 	public void onStart() {
-		System.out.println("Game Started");
 		game = mirror.getGame();
 		visualizer = new Visualizer(game, this, DEBUG_INFO);
 
@@ -268,7 +277,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 
 		isAttackInProgress.clear();
 		hasAttackOrderBeenGiven.clear();
-		
+		relativeHps.clear();
+
 		BWTA.readMap();
 		BWTA.analyze();
 	}
@@ -280,9 +290,10 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	@Override
 	public void onFrame() {
-		cacheUnits();
+		cacheVariables();
 		populateUnitHashMaps();
-		
+		cacheRelativeHps();
+
 		// Comment: tried to wait for the first request from evolution
 		// while (!isStarted) {
 		// try {
@@ -302,8 +313,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 		}
 		if (Thread.currentThread().isInterrupted()) {
 			game.leaveGame();
-		}		
+		}
 		game.drawTextScreen(0, 20, BOT_NAME);
+		game.drawTextScreen(0, 30, "" + game.getFrameCount());
 		checkForRoundEnd();
 		visualizer.highlightUnits();
 		for (Unit u : myUnitsNoRevealers) {
@@ -311,7 +323,39 @@ public class Controller extends DefaultBWListener implements Runnable,
 		}
 	}
 
-	private void cacheUnits() {
+	private void cacheRelativeHps() {
+		double averageRelativeHpLeft = 0;
+		double hpLeft = 0;
+		double maxHp = 0;
+		for (Unit u : getMyUnitsNoRevealers()) {
+			hpLeft = 0;
+			maxHp = 0;
+			hpLeft += u.getHitPoints();
+			hpLeft += u.getShields();
+			maxHp += u.getType().maxHitPoints();
+			maxHp += u.getType().maxShields();
+			averageRelativeHpLeft += hpLeft / maxHp;
+		}
+		averageRelativeHpLeft /= getMyUnitsNoRevealers().size();
+		for (Entry<Unit, Double> entry : relativeHps.entrySet()) {
+			hpLeft = 0;
+			maxHp = 0;
+			hpLeft += entry.getKey().getHitPoints();
+			hpLeft += entry.getKey().getShields();
+			maxHp += entry.getKey().getType().maxHitPoints();
+			maxHp += entry.getKey().getType().maxShields();
+			entry.setValue((hpLeft / maxHp) / averageRelativeHpLeft);
+		}
+	}
+	
+	public double getRelativeHp(Unit u) {
+		return relativeHps.get(u);
+	}
+
+	/**
+	 * Caches the lists of own and enemy units to avoid calls to BWAPI.
+	 */
+	private void cacheVariables() {
 		myUnitsNoRevealers = removeRevealersFromUnitSet(game.self().getUnits());
 		enemyUnitsNoRevealers = removeRevealersFromUnitSet(game.enemy()
 				.getUnits());
@@ -330,6 +374,10 @@ public class Controller extends DefaultBWListener implements Runnable,
 		if (isAttackInProgress.isEmpty())
 			for (Unit u : getMyUnitsNoRevealers())
 				isAttackInProgress.put(u.getID(), false);
+
+		if (relativeHps.isEmpty())
+			for (Unit u : getMyUnitsNoRevealers())
+				relativeHps.put(u, 1d);
 	}
 
 	/**
@@ -375,7 +423,6 @@ public class Controller extends DefaultBWListener implements Runnable,
 		// retrieved. Time to start a new round.
 		if (hasBeenRoundEndRegistered && !isRoundResultRetrievable
 				&& hasMatchStarted) {
-			System.out.println("Restart game");
 			game.restartGame();
 			hasMatchStarted = false;
 		}
@@ -390,10 +437,9 @@ public class Controller extends DefaultBWListener implements Runnable,
 		score = 0;
 		score += game.self().getUnitScore();
 		score += game.self().getKillScore();
-		score -= game.enemy().getKillScore();		
+		score -= game.enemy().getKillScore();
 		int totalOwnHitpointsShieldsLeft = 0;
-		if (!(game.getFrameCount() > GAME_MAX_LENGTH))
-		{
+		if (!(game.getFrameCount() > GAME_MAX_LENGTH)) {
 			totalOwnHitpointsShieldsLeft = 0;
 			for (Unit u : getMyUnitsNoRevealers()) {
 				totalOwnHitpointsShieldsLeft += u.getShields();
@@ -401,15 +447,31 @@ public class Controller extends DefaultBWListener implements Runnable,
 			}
 			totalOwnHitpointsShieldsLeft *= 10;
 			score += totalOwnHitpointsShieldsLeft;
+		} else {
+			if (game.self().getKillScore() > 0)
+				try (PrintWriter out = new PrintWriter(
+						new BufferedWriter(new FileWriter("endlogs" + File.separator
+								+ name + ".txt", true)))) {
+					out.println("Framecount: " + game.getFrameCount()
+							+ " Own units: " + getMyUnitsNoRevealers().size()
+							+ " Enemy units: "
+							+ getEnemyUnitsNoRevealers().size());
+				} catch (IOException e) {
+					System.out.println("Error when printing to myfile.txt: " + e.getMessage());
+				}
 		}
-//		System.out.println("Unit score: " + game.self().getUnitScore() + " Enemy kill score: " + game.enemy().getKillScore());
-//		System.out.println("Own unit count: " + getMyUnitsNoRevealers().size() + " Enemy unit count: " + getEnemyUnitsNoRevealers().size());
-//		System.out.println("TotalOwnHitpointsShieldsLeft: " + totalOwnHitpointsShieldsLeft);
-//		System.out.println("Score: " + score);
+		// System.out.println("Unit score: " + game.self().getUnitScore() +
+		// " Enemy kill score: " + game.enemy().getKillScore());
+		// System.out.println("Own unit count: " +
+		// getMyUnitsNoRevealers().size() + " Enemy unit count: " +
+		// getEnemyUnitsNoRevealers().size());
+		// System.out.println("TotalOwnHitpointsShieldsLeft: " +
+		// totalOwnHitpointsShieldsLeft);
+		// System.out.println("Score: " + score);
 		score -= MAX_SCORE;
 		score *= -1;
+		System.out.println("End frames: " + game.getFrameCount());
 	}
-
 	/**
 	 * Return a list of my units. Ignore map revealers.
 	 * 
@@ -465,7 +527,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 			visualizer.drawPotentialValues(potentials);
 			if (isAttacking(u)) {
 				return;
-			}			
+			}
 			currentPotential = potentialCalculator.getPotential(
 					u.getPosition(), u);
 			if (u.getGroundWeaponCooldown() == 0 && currentPotential > 0) {
@@ -647,5 +709,6 @@ public class Controller extends DefaultBWListener implements Runnable,
 	public void onUnitDestroy(Unit unit) {
 		isAttackInProgress.remove(unit.getID());
 		hasAttackOrderBeenGiven.remove(unit.getID());
+		relativeHps.remove(unit);
 	}
 }

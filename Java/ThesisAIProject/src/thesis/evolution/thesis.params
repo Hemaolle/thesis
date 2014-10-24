@@ -56,7 +56,7 @@ gp.fs.1 = ec.gp.GPFunctionSet
 gp.fs.1.name = f1
 
 # We have six functions in the function set.  They are:
-gp.fs.1.size = 7
+gp.fs.1.size = 8
 gp.fs.1.func.0 = thesis.evolution.X
 gp.fs.1.func.0.nc = nc0
 gp.fs.1.func.1 = thesis.evolution.Add
@@ -71,6 +71,8 @@ gp.fs.1.func.5 = thesis.evolution.FloatERC
 gp.fs.1.func.5.nc = nc0
 gp.fs.1.func.6 = thesis.evolution.Y
 gp.fs.1.func.6.nc = nc0
+gp.fs.1.func.7 = thesis.evolution.Z
+gp.fs.1.func.7.nc = nc0
 
 eval.problem = thesis.evolution.ThesisProblem
 eval.problem.data = thesis.evolution.DoubleData

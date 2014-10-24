@@ -34,7 +34,7 @@ public class RemoteBotRMI extends RmiStarter {
 	public void doCustomRmiHandling() {
 		try {
 			Registry registry = LocateRegistry.getRegistry();
-			RemoteBotInterface remoteBot = new Controller();
+			RemoteBotInterface remoteBot = new Controller(currentName);
 			RemoteBotInterface remoteBotStub = (RemoteBotInterface) UnicastRemoteObject
 					.exportObject(remoteBot, 0);
 
