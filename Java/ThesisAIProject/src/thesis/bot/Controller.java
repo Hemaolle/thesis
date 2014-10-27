@@ -63,6 +63,12 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	final static int GAME_MAX_LENGTH = 1300;
 	/**
+	 * Determines if performance statistics should be written to two files:
+	 * victories.txt and surviving_units.txt. Meant for post evolution
+	 * evaluation.
+	 */
+	final static boolean WRITE_STATS_TO_FILE = false;
+	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.
 	 */
@@ -347,7 +353,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 			entry.setValue((hpLeft / maxHp) / averageRelativeHpLeft);
 		}
 	}
-	
+
 	public double getRelativeHp(Unit u) {
 		return relativeHps.get(u);
 	}
@@ -449,16 +455,11 @@ public class Controller extends DefaultBWListener implements Runnable,
 			score += totalOwnHitpointsShieldsLeft;
 		} else {
 			if (game.self().getKillScore() > 0)
-				try (PrintWriter out = new PrintWriter(
-						new BufferedWriter(new FileWriter("endlogs" + File.separator
-								+ name + ".txt", true)))) {
-					out.println("Framecount: " + game.getFrameCount()
-							+ " Own units: " + getMyUnitsNoRevealers().size()
-							+ " Enemy units: "
-							+ getEnemyUnitsNoRevealers().size());
-				} catch (IOException e) {
-					System.out.println("Error when printing to myfile.txt: " + e.getMessage());
-				}
+				appendToFile("endlogs" + File.separator + name + ".txt",
+						"Framecount: " + game.getFrameCount() + " Own units: "
+								+ getMyUnitsNoRevealers().size()
+								+ " Enemy units: "
+								+ getEnemyUnitsNoRevealers().size());
 		}
 		// System.out.println("Unit score: " + game.self().getUnitScore() +
 		// " Enemy kill score: " + game.enemy().getKillScore());
@@ -471,7 +472,42 @@ public class Controller extends DefaultBWListener implements Runnable,
 		score -= MAX_SCORE;
 		score *= -1;
 		System.out.println("End frames: " + game.getFrameCount());
+		if (WRITE_STATS_TO_FILE)
+			writeStatsToFile();
 	}
+
+	/**
+	 * Writes performance statistics to two files: victories.txt and
+	 * surviving_units.txt. Meant for post evolution evaluation.
+	 */
+	private void writeStatsToFile() {
+		appendToFile("victories.txt",
+				(getEnemyUnitsNoRevealers().size() < getMyUnitsNoRevealers()
+						.size()) ? "1" : "0");
+		appendToFile(
+				"surviving_units.txt",
+				(" Own: " + getMyUnitsNoRevealers().size() + " Enemy: " + getEnemyUnitsNoRevealers()
+						.size()));
+	}
+
+	/**
+	 * Appends a line of text to a file.
+	 * 
+	 * @param filePath
+	 *            Path to the file.
+	 * @param line
+	 *            The line to append.
+	 */
+	private void appendToFile(String filePath, String line) {
+		try (PrintWriter out = new PrintWriter(new BufferedWriter(
+				new FileWriter(filePath, true)))) {
+			out.println(line);
+		} catch (IOException e) {
+			System.out.println("Error when printing to myfile.txt: "
+					+ e.getMessage());
+		}
+	}
+
 	/**
 	 * Return a list of my units. Ignore map revealers.
 	 * 
