@@ -99,14 +99,15 @@ public class PotentialCalculator {
 			if (!onCooldown)
 				for (int j = 0; j < distancesFromEnemies.length; j++) {
 					currentPotential = enemyPotential(distancesFromEnemies[j],
-							ownMaximumShootDistance);
+							ownMaximumShootDistance, relativeHP);
 					if (maxPotential < currentPotential)
 						maxPotential = currentPotential;
 				}
 			else
 				for (int j = 0; j < distancesFromEnemies.length; j++) {
 					currentPotential = enemyPotentialWhenOnCooldown(
-							distancesFromEnemies[j], ownMaximumShootDistance);
+							distancesFromEnemies[j], ownMaximumShootDistance,
+							relativeHP);
 					if (maxPotential < currentPotential)
 						maxPotential = currentPotential;
 				}
@@ -186,32 +187,34 @@ public class PotentialCalculator {
 	}
 
 	/**
-	 * Calculates the potential depending on proximity to an enemy unit.
+	 * Calculates the potential depending on proximity to an enemy unit. (Tree
+	 * 0)
 	 * 
 	 * @param x
 	 *            Unit's distance from an enemy unit.
 	 * @return The potential caused by the enemy unit.
 	 */
-	public double enemyPotential(double x, double ownMSD) {
+	public double enemyPotential(double x, double ownMSD, double relativeHP) {
 		return ((((ownMSD - x) / (-20.060897261620767 / x)) + ((-13.561011376251315 * x) / (124.02884198347397 * x))) / (((ownMSD * -6.799291633435303) * (ownMSD / 16.57640825303588)) - (((ownMSD * -6.799291633435303) * (ownMSD / 16.57640825303588)) - (((x - x) - (((ownMSD + x) * ownMSD) / ((ownMSD * ownMSD) + (x - ownMSD)))) - (ownMSD - -49.58157106169614)))))
 				- ((((ownMSD + x) * ownMSD) / ((ownMSD * ownMSD) + (x - ownMSD))) - (((ownMSD - ownMSD) - (ownMSD / 477.07602431436385)) * ((x + ownMSD) + (x + 75.45597006942614))));
 	}
 
 	/**
 	 * Calculates the potential depending on proximity to an enemy unit when the
-	 * own unit is on cooldown.
+	 * (Tree 3) own unit is on cooldown.
 	 * 
 	 * @param x
 	 *            Unit's distance from an enemy unit.
 	 * @return The potential caused by the enemy unit.
 	 */
-	public double enemyPotentialWhenOnCooldown(double x, double ownMSD) {
+	public double enemyPotentialWhenOnCooldown(double x, double ownMSD,
+			double relativeHP) {
 		return ((368.72076439707496 * x) / (ownMSD - -479.66266097104307))
 				* (((368.72076439707496 * (368.72076439707496 * x)) / (ownMSD - -479.66266097104307)) + ownMSD);
 	}
 
 	/**
-	 * Calculates the potential depending on proximity to an own unit.
+	 * Calculates the potential depending on proximity to an own unit. (Tree 2)
 	 * 
 	 * @param x
 	 *            Unit's distance from an own unit.
@@ -223,7 +226,7 @@ public class PotentialCalculator {
 	}
 
 	/**
-	 * Calculates the potential depending on proximity to a map edge.
+	 * Calculates the potential depending on proximity to a map edge. (Tree 1)
 	 * 
 	 * @param x
 	 *            Unit's distance from map edge
