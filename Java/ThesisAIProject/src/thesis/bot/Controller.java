@@ -61,7 +61,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * restarted if it doesn't end before the maximum number of frames has
 	 * passed.
 	 */
-	final static int GAME_MAX_LENGTH = 1300;
+	final static int GAME_MAX_LENGTH = 1700;
 	/**
 	 * Determines if performance statistics should be written to two files:
 	 * victories.txt and surviving_units.txt. Meant for post evolution
@@ -447,7 +447,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 		int totalOwnHitpointsShieldsLeft = 0;
 		if (!(game.getFrameCount() > GAME_MAX_LENGTH)) {
 			totalOwnHitpointsShieldsLeft = 0;
-			for (Unit u : getMyUnitsNoRevealers()) {
+			for (Unit u : game.self().getUnits()) {
 				totalOwnHitpointsShieldsLeft += u.getShields();
 				totalOwnHitpointsShieldsLeft += u.getHitPoints();
 			}
@@ -537,7 +537,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	private List<Unit> removeRevealersFromUnitSet(List<Unit> unitList) {
 		List<Unit> units = new ArrayList<Unit>();
 		for (Unit unit : unitList) {
-			if (unit.getType() != UnitType.Special_Map_Revealer)
+			if (unit.getType() != UnitType.Terran_SCV)
 				units.add(unit);
 		}
 		return units;
