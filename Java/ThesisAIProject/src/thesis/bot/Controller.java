@@ -488,6 +488,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 				"surviving_units.txt",
 				(" Own: " + getMyUnitsNoRevealers().size() + " Enemy: " + getEnemyUnitsNoRevealers()
 						.size()));
+		appendToFile("scores.txt", "" + score);
 	}
 
 	/**
