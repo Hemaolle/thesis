@@ -53,7 +53,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	/**
 	 * The maximum distance of the move command from the unit position.
 	 */
-	final static int MOVE_DISTANCE = 15;
+	final static int MOVE_DISTANCE = 1;
 	/** Determines the game speed in frames per second. */
 	final static int GAME_SPEED = 0;
 	/**
@@ -78,7 +78,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * every logical game frame. Disabling the GUI should speed the game up.
 	 */
 	final static boolean GUI_ON = true;
-	final static int MAX_SCORE = 22950;
+	final static int MAX_SCORE = 21150;
 	/**
 	 * If the notification about a round end has been registered (the map used
 	 * should set minerals to 500 to notify about a round end).
