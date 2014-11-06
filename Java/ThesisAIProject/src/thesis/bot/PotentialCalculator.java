@@ -198,6 +198,29 @@ public class PotentialCalculator {
 		return ((((ownMSD - x) / (-20.060897261620767 / x)) + ((-13.561011376251315 * x) / (124.02884198347397 * x))) / (((ownMSD * -6.799291633435303) * (ownMSD / 16.57640825303588)) - (((ownMSD * -6.799291633435303) * (ownMSD / 16.57640825303588)) - (((x - x) - (((ownMSD + x) * ownMSD) / ((ownMSD * ownMSD) + (x - ownMSD)))) - (ownMSD - -49.58157106169614)))))
 				- ((((ownMSD + x) * ownMSD) / ((ownMSD * ownMSD) + (x - ownMSD))) - (((ownMSD - ownMSD) - (ownMSD / 477.07602431436385)) * ((x + ownMSD) + (x + 75.45597006942614))));
 	}
+	
+	/**
+	 * Calculates the potential depending on proximity to a map edge. (Tree 1)
+	 * 
+	 * @param x
+	 *            Unit's distance from map edge
+	 * @return The potential caused by the map edge.
+	 */
+	public double mapEdgePotential(double x) {
+		return x;
+	}
+	
+	/**
+	 * Calculates the potential depending on proximity to an own unit. (Tree 2)
+	 * 
+	 * @param x
+	 *            Unit's distance from an own unit.
+	 * @return The potential caused by the own unit.
+	 */
+	public double ownPotential(double x) {
+		return ((((x / x) + 311.95614217155935) + 311.95614217155935) * x)
+				/ (((x + x) + (x / x)) - (-211.77380603444163 / x));
+	}	
 
 	/**
 	 * Calculates the potential depending on proximity to an enemy unit when the
@@ -211,30 +234,7 @@ public class PotentialCalculator {
 			double relativeHP) {
 		return ((368.72076439707496 * x) / (ownMSD - -479.66266097104307))
 				* (((368.72076439707496 * (368.72076439707496 * x)) / (ownMSD - -479.66266097104307)) + ownMSD);
-	}
-
-	/**
-	 * Calculates the potential depending on proximity to an own unit. (Tree 2)
-	 * 
-	 * @param x
-	 *            Unit's distance from an own unit.
-	 * @return The potential caused by the own unit.
-	 */
-	public double ownPotential(double x) {
-		return ((((x / x) + 311.95614217155935) + 311.95614217155935) * x)
-				/ (((x + x) + (x / x)) - (-211.77380603444163 / x));
-	}
-
-	/**
-	 * Calculates the potential depending on proximity to a map edge. (Tree 1)
-	 * 
-	 * @param x
-	 *            Unit's distance from map edge
-	 * @return The potential caused by the map edge.
-	 */
-	public double mapEdgePotential(double x) {
-		return x;
-	}
+	}	
 
 	/**
 	 * Gets the potentials around an unit in 8 directions and the unit's current
