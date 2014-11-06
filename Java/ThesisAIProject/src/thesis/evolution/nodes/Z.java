@@ -5,7 +5,9 @@
 */
 
 
-package thesis.evolution;
+package thesis.evolution.nodes;
+import thesis.evolution.DoubleData;
+import thesis.evolution.ThesisProblem;
 import ec.*;
 import ec.gp.*;
 
@@ -18,7 +20,6 @@ import ec.gp.*;
  */
 public class Z extends GPNode
     {    
-	private static final long serialVersionUID = 6977648219687177839L;
 
 	public String toString() { return "z"; }
 

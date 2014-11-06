@@ -61,7 +61,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * restarted if it doesn't end before the maximum number of frames has
 	 * passed.
 	 */
-	final static int GAME_MAX_LENGTH = 1700;
+	final static int GAME_MAX_LENGTH = 2300;
 	/**
 	 * Determines if performance statistics should be written to two files:
 	 * victories.txt and surviving_units.txt. Meant for post evolution

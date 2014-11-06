@@ -84,6 +84,7 @@ public class PotentialCalculator {
 		boolean onCooldown = !(u.getGroundWeaponCooldown() == 0);
 		double[] distancesFromEdges = { distMapEdge };
 		double[] distancesFromEnemies = getEnemyDistances(x, y);
+		double[][] enemyPositionVectors = getEnemyPositionVectors(x, y);
 		double[] distancesFromOwnUnits = getOwnUnitDistances(x, y, u);
 
 		if (potentialProvider == null) {
@@ -121,7 +122,7 @@ public class PotentialCalculator {
 				potential += potentialProvider.getPotential(
 						distancesFromEnemies, distancesFromOwnUnits,
 						ownMaximumShootDistance, distancesFromEdges,
-						onCooldown, relativeHP);
+						onCooldown, relativeHP, enemyPositionVectors);
 			} catch (RemoteException e) {
 				System.err.println("Remote potential evaluation failed: ");
 				e.printStackTrace();
@@ -160,6 +161,26 @@ public class PotentialCalculator {
 	 */
 	private double[] getEnemyDistances(double x, double y) {
 		return getUnitDistances(x, y, bot.getEnemyUnitsNoRevealers());
+	}
+	
+	/**
+	 * Gets the distances of the enemy units from given position.
+	 * 
+	 * @param x
+	 *            X coordinate
+	 * @param y
+	 *            Y coordinate
+	 * @return Array of enemy unit distances from that location.
+	 */
+	private double[][] getEnemyPositionVectors(double x, double y) {
+		List<Unit> enemyUnits = bot.getEnemyUnitsNoRevealers();
+		double[][] positionVectors = new double[enemyUnits.size()][2];
+		for(int i = 0; i < enemyUnits.size(); i++) {
+			Position enemyPosition = enemyUnits.get(i).getPosition();
+			positionVectors[i][0] = enemyPosition.getX() - x;
+			positionVectors[i][1] = enemyPosition.getY() - y;
+		}
+		return positionVectors;
 	}
 
 	/**

@@ -40,6 +40,8 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	public double currentX;
 	public double currentY;
 	public double currentZ;
+	public double currentW;
+	public double currentU;
 	/** The broodwar clients used in evaluation */
 	ArrayList<RemoteBotInterface> bwClients;
 
@@ -172,13 +174,17 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 * @param ownMaximumShootDistance
 	 *            The own unit's maximum shooting distance.
 	 * @param relativeHP
+	 * @param enemyPositionVector
 	 * @return The potential for the enemy.
 	 */
 	private double getEnemyPotential(double distanceFromEnemy,
-			double ownMaximumShootDistance, double relativeHP) {
+			double ownMaximumShootDistance, double relativeHP,
+			double[] enemyPositionVector) {
 		currentX = distanceFromEnemy;
 		currentY = ownMaximumShootDistance;
 		currentZ = relativeHP;
+		currentU = enemyPositionVector[0];
+		currentW = enemyPositionVector[1];
 		((GPIndividual) ind).trees[0].child.eval(state, threadnum, localInput,
 				stack, ((GPIndividual) ind), this);
 		return localInput.x;
@@ -192,14 +198,18 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 *            Player unit's distance from the enemy unit
 	 * @param ownMaximumShootDistance
 	 *            The own unit's maximum shooting distance.
-	 * @param relativeHP 
+	 * @param relativeHP
+	 * @param enemyPositionVectors 
 	 * @return The potential for the enemy.
 	 */
 	private double getenemyPotentialWhenOnCooldown(double distanceFromEnemy,
-			double ownMaximumShootDistance, double relativeHP) {
+			double ownMaximumShootDistance, double relativeHP,
+			double[] enemyPositionVector) {
 		currentX = distanceFromEnemy;
 		currentY = ownMaximumShootDistance;
 		currentZ = relativeHP;
+		currentU = enemyPositionVector[0];
+		currentW = enemyPositionVector[1];
 		((GPIndividual) ind).trees[3].child.eval(state, threadnum, localInput,
 				stack, ((GPIndividual) ind), this);
 		return localInput.x;
@@ -237,19 +247,7 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 
 		return potential;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * Using the function from the individual currently being evaluated.
-	 * 
-	 */
-	public double getPotential(double distanceFromEnemy,
-			double ownMaximumShootDistance, double relativeHP) {
-		return getEnemyPotential(distanceFromEnemy, ownMaximumShootDistance,
-				relativeHP);
-	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -258,14 +256,16 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 	 */
 	public double getPotential(double[] distancesFromEnemies,
 			double[] distancesFromOwnUnits, double ownMaximumShootDistance,
-			double[] distancesFromEdges, boolean onCooldown, double relativeHP) {
+			double[] distancesFromEdges, boolean onCooldown, double relativeHP,
+			double[][] enemyPositionVectors) {
 		double potential = 0;
 		double maxPotential = -Double.MAX_VALUE;
 		double currentPotential;
 		if (!onCooldown)
 			for (int i = 0; i < distancesFromEnemies.length; i++) {
 				currentPotential = getEnemyPotential(distancesFromEnemies[i],
-						ownMaximumShootDistance, relativeHP);
+						ownMaximumShootDistance, relativeHP,
+						enemyPositionVectors[i]);
 				if (maxPotential < currentPotential)
 					maxPotential = currentPotential;
 			}
@@ -273,7 +273,7 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 			for (int i = 0; i < distancesFromEnemies.length; i++) {
 				currentPotential = getenemyPotentialWhenOnCooldown(
 						distancesFromEnemies[i], ownMaximumShootDistance,
-						relativeHP);
+						relativeHP, enemyPositionVectors[i]);
 				if (maxPotential < currentPotential)
 					maxPotential = currentPotential;
 			}

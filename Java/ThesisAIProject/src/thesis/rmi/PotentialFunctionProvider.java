@@ -16,22 +16,7 @@ public interface PotentialFunctionProvider extends Remote {
 	/**
 	 * The name of the remote service.
 	 */
-	public static final String SERVICE_NAME = "PotentialFunctionService";
-
-	/**
-	 * Returns the potential based only on the distance from one enemy unit.
-	 * 
-	 * TODO: Modify to use multiple enemy units.
-	 * 
-	 * @param distanceFromEnemy
-	 *            Distance between the AI player's unit that the potential is
-	 *            being calculated for and the enemy unit.
-	 * @return The potential value.
-	 * @throws RemoteException
-	 *             If something goes wrong with the remote function call.
-	 */
-	public double getPotential(double distanceFromEnemy,
-			double ownMaximumShootDistance, double relativeHP) throws RemoteException;
+	public static final String SERVICE_NAME = "PotentialFunctionService";	
 
 	/**
 	 * Returns the potential based on the distance from one enemy unit and the
@@ -50,12 +35,13 @@ public interface PotentialFunctionProvider extends Remote {
 	 *            Indicates if the unit is on cooldown.
 	 * @param relativeHP
 	 *            Unit's HP amount relative to other own units.
+	 * @param enemyPositionVectors 
 	 * @return The potential value.
 	 * @throws RemoteException
 	 *             If something goes wrong with the remote function call.
 	 */
 	public double getPotential(double distancesFromEnemies[],
 			double[] distancesFromOwnUnits, double ownMaximumShootDistance,
-			double[] distancesFromEdges, boolean onCooldown, double relativeHP)
+			double[] distancesFromEdges, boolean onCooldown, double relativeHP, double[][] enemyPositionVectors)
 			throws RemoteException;
 }

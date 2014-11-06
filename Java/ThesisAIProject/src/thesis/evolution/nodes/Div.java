@@ -5,7 +5,8 @@
 */
 
 
-package thesis.evolution;
+package thesis.evolution.nodes;
+import thesis.evolution.DoubleData;
 import ec.*;
 import ec.gp.*;
 
@@ -18,8 +19,6 @@ import ec.gp.*;
  */
 public class Div extends GPNode
     {
-
-	private static final long serialVersionUID = 8528119815001531877L;
 
 	public String toString() { return "/"; }
 
