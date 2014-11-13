@@ -175,3 +175,6 @@ stat.child.1.file = $out3.stat
 checkpoint = true
 checkpoint-modulo = 1
 checkpoint-directory = /../../../checkpoints/
+
+gp.koza.half.min-depth = 2
+gp.koza.half.max-depth = 8
