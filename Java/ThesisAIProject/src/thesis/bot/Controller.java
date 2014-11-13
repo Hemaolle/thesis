@@ -61,7 +61,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * restarted if it doesn't end before the maximum number of frames has
 	 * passed.
 	 */
-	final static int GAME_MAX_LENGTH = 2300;
+	final static int GAME_MAX_LENGTH = 2000;
 	/**
 	 * Determines if performance statistics should be written to two files:
 	 * victories.txt and surviving_units.txt. Meant for post evolution
@@ -443,7 +443,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 		score = 0;
 		score += game.self().getUnitScore();
 		score += game.self().getKillScore();
-		score -= game.enemy().getKillScore();
+		//score -= game.enemy().getKillScore();
 		int totalOwnHitpointsShieldsLeft = 0;
 		if (!(game.getFrameCount() > GAME_MAX_LENGTH)) {
 			totalOwnHitpointsShieldsLeft = 0;

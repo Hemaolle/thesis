@@ -100,7 +100,7 @@ public class PotentialCalculator {
 			if (!onCooldown)
 				for (int j = 0; j < distancesFromEnemies.length; j++) {
 					currentPotential = enemyPotential(distancesFromEnemies[j],
-							ownMaximumShootDistance, relativeHP);
+							ownMaximumShootDistance, relativeHP, enemyPositionVectors[j][0], enemyPositionVectors[j][1]);
 					if (maxPotential < currentPotential)
 						maxPotential = currentPotential;
 				}
@@ -108,7 +108,7 @@ public class PotentialCalculator {
 				for (int j = 0; j < distancesFromEnemies.length; j++) {
 					currentPotential = enemyPotentialWhenOnCooldown(
 							distancesFromEnemies[j], ownMaximumShootDistance,
-							relativeHP);
+							relativeHP, enemyPositionVectors[j][0], enemyPositionVectors[j][1]);
 					if (maxPotential < currentPotential)
 						maxPotential = currentPotential;
 				}
@@ -215,9 +215,8 @@ public class PotentialCalculator {
 	 *            Unit's distance from an enemy unit.
 	 * @return The potential caused by the enemy unit.
 	 */
-	public double enemyPotential(double x, double ownMSD, double relativeHP) {
-		return ((((ownMSD - x) / (-20.060897261620767 / x)) + ((-13.561011376251315 * x) / (124.02884198347397 * x))) / (((ownMSD * -6.799291633435303) * (ownMSD / 16.57640825303588)) - (((ownMSD * -6.799291633435303) * (ownMSD / 16.57640825303588)) - (((x - x) - (((ownMSD + x) * ownMSD) / ((ownMSD * ownMSD) + (x - ownMSD)))) - (ownMSD - -49.58157106169614)))))
-				- ((((ownMSD + x) * ownMSD) / ((ownMSD * ownMSD) + (x - ownMSD))) - (((ownMSD - ownMSD) - (ownMSD / 477.07602431436385)) * ((x + ownMSD) + (x + 75.45597006942614))));
+	public double enemyPotential(double x, double ownMSD, double relativeHP, double u, double w) {
+		return tan(-0.25987056341509196) / (482.2377243640832 - x);
 	}
 	
 	/**
@@ -228,7 +227,7 @@ public class PotentialCalculator {
 	 * @return The potential caused by the map edge.
 	 */
 	public double mapEdgePotential(double x) {
-		return x;
+		return sin(negexp(0.2662283319407983 / x));
 	}
 	
 	/**
@@ -239,8 +238,7 @@ public class PotentialCalculator {
 	 * @return The potential caused by the own unit.
 	 */
 	public double ownPotential(double x) {
-		return ((((x / x) + 311.95614217155935) + 311.95614217155935) * x)
-				/ (((x + x) + (x / x)) - (-211.77380603444163 / x));
+		return cos(tanh(iflte(cos(tanh(iflte(square(165.39910914669997), sin(square(165.39910914669997)), 0.3863582459429149 / 0.7612546338622452, cos(0.4521386034658581)))), sin(-408.3478155105742), 0.3863582459429149 / 0.7612546338622452, -408.3478155105742)));
 	}	
 
 	/**
@@ -252,9 +250,8 @@ public class PotentialCalculator {
 	 * @return The potential caused by the enemy unit.
 	 */
 	public double enemyPotentialWhenOnCooldown(double x, double ownMSD,
-			double relativeHP) {
-		return ((368.72076439707496 * x) / (ownMSD - -479.66266097104307))
-				* (((368.72076439707496 * (368.72076439707496 * x)) / (ownMSD - -479.66266097104307)) + ownMSD);
+			double relativeHP, double u, double w) {
+		return square(w) * Math.log(-0.3329080324299645);
 	}	
 
 	/**
@@ -380,5 +377,65 @@ public class PotentialCalculator {
 			}
 		}
 		return highestPosition;
+	}
+	
+	double sin(double x) {
+		return Math.sin(x);
+	}
+	
+	double cos(double x) {
+		return Math.cos(x);
+	}
+	
+	double cube(double x) {
+		return x*x*x;
+	}
+	
+	double exp(double x)  {
+		return Math.exp(x);
+	}
+	
+	double iflte(double condition1, double condition2, double returnValue1, double returnValue2) {
+		if(condition1 < condition2)
+			return returnValue1;
+		else
+			return returnValue2;
+	}
+	
+	double log(double x) {
+		if (x == 0)
+			return  0;
+		else
+			return  Math.log(Math.abs(x));
+	}
+	
+	double negexp(double x) {
+		return Math.exp(0 - x);
+	}
+	
+	double pow(double x, double power) {
+		double result = Math.pow(Math.abs(x), power);
+		if (result == Double.NaN || result == Double.POSITIVE_INFINITY || result == Double.NEGATIVE_INFINITY )
+			result = 0;
+		return result;
+	}
+	
+	double sqrt(double x) {
+		return Math.sqrt(Math.abs(x));
+	}
+	
+	double square(double x) {
+		return x*x;
+	}
+	
+	double tan(double x) {
+		double result = Math.tan(x);
+		if (result == Double.NaN || result == Double.POSITIVE_INFINITY || result == Double.NEGATIVE_INFINITY )
+			result = 0;
+		return result;
+	}
+	
+	double tanh(double x) {
+		return Math.tanh(x);
 	}
 }

@@ -6,6 +6,7 @@
 
 
 package thesis.evolution.nodes;
+import thesis.evolution.DoubleData;
 import ec.*;
 import ec.app.regression.*;
 import ec.gp.*;
@@ -41,10 +42,10 @@ public class Sqrt extends GPNode
         final GPIndividual individual,
         final Problem problem)
         {
-        RegressionData rd = ((RegressionData)(input));
+        DoubleData rd = ((DoubleData)(input));
 
         children[0].eval(state,thread,input,stack,individual,problem);
-        rd.x = Math.sqrt(rd.x);
+        rd.x = Math.sqrt(Math.abs(rd.x));
         }
     }
 

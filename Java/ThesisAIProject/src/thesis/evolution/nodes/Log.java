@@ -39,7 +39,7 @@ public class Log extends GPNode {
 		if (result == 0)
 			result = 0;
 		else
-			result = Math.log(result);
+			result = Math.log(Math.abs(result));
 		rd.x = result;
 	}
 }
