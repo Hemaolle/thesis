@@ -63,9 +63,10 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 */
 	final static int GAME_MAX_LENGTH = 2000;
 	/**
-	 * Determines if performance statistics should be written to two files:
-	 * victories.txt and surviving_units.txt. Meant for post evolution
-	 * evaluation.
+	 * Determines if performance statistics should be written to three files:
+	 * victories_%name%.txt, surviving_units_%name%.txt and score_%name%.txt
+	 * where %name% is the value of the name variable. For post
+	 * evolution evaluation.
 	 */
 	final static boolean WRITE_STATS_TO_FILE = false;
 	/**
@@ -135,13 +136,18 @@ public class Controller extends DefaultBWListener implements Runnable,
 	private String name;
 
 	/**
-	 * Creates the AI client and gets results from it indefinitely.
+	 * Creates the AI client and gets results from it indefinitely. First command
+	 * line argument is given as the name for the client.
 	 * 
 	 * @throws InterruptedException
 	 *             If interrupted.
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		Controller client = new Controller("Default");
+		String name = "Default";
+		if (args.length > 0) {
+			name = args[0];
+		}
+		Controller client = new Controller(name);
 		int i = 1;
 		while (true) {
 			System.out.println("Round " + i + ". Score: "
@@ -477,18 +483,19 @@ public class Controller extends DefaultBWListener implements Runnable,
 	}
 
 	/**
-	 * Writes performance statistics to two files: victories.txt and
-	 * surviving_units.txt. Meant for post evolution evaluation.
+	 * Writes performance statistics to three files: victories_%name%.txt,
+	 * surviving_units_%name%.txt and score_%name%.txt where %name% is
+	 * the value of the name variable.
 	 */
 	private void writeStatsToFile() {
-		appendToFile("victories.txt",
+		appendToFile("victories_" + name + ".txt",
 				(getEnemyUnitsNoRevealers().size() < getMyUnitsNoRevealers()
 						.size()) ? "1" : "0");
 		appendToFile(
-				"surviving_units.txt",
+				"surviving_units_" + name + ".txt",
 				(" Own: " + getMyUnitsNoRevealers().size() + " Enemy: " + getEnemyUnitsNoRevealers()
 						.size()));
-		appendToFile("scores.txt", "" + score);
+		appendToFile("scores_" + name + ".txt", "" + score);
 	}
 
 	/**
