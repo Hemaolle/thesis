@@ -12,7 +12,17 @@ Installation
 (1.61.1) 
 (https://us.battle.net/support/en/article/classic-game-patches).
 3. Install BWAPI 3.7.4 by running the install.exe in BWAPI folder.
-4. Replace the bwapi.ini file in bwapi-data folder in StarCraft 
+If there are problems with installation, it's possible to install
+manually with the following steps:
+   a) Copy all the files from the "WINDOWS" directory into your
+       Windows installation location (e.g. C:\Windows\) or to any
+	   other location from your system's PATH variable.
+   b) Copy everything from "Starcraft" folder into the location
+	  of your StarCraft installation.
+3.2 Run "Multiple Instance Hack.bat" in the bwapi-data folder (the
+one copied to StarCraft install location. (Required only for running
+multiple instances of StarCraft in parallel.
+4. Replace the bwapi.ini file in bwapi-data folder in StarCraft    
 installation folder with the bwapi.ini in the package.
 5. Copy the EvolutionMap.scm to Maps/custom folder in StarCraft 
 installation folder.
