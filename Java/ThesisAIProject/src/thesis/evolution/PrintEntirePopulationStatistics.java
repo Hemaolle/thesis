@@ -155,7 +155,7 @@ public class PrintEntirePopulationStatistics extends Statistics implements Stead
             for(int y=0;y<state.population.subpops[x].individuals.length;y++)
             {
                state.output.println("", statisticslog);
-               state.output.println("Individual " + y, statisticslog);
+               state.output.println("Generation" + state.generation + ", Individual " + y, statisticslog);
                state.population.subpops[x].individuals[y].printIndividualForHumans(state,statisticslog);
             }
             if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of generation" + 
