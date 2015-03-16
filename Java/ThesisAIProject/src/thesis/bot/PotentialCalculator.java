@@ -206,52 +206,60 @@ public class PotentialCalculator {
 		}
 		return distances;
 	}
-
+	
 	/**
-	 * Calculates the potential depending on proximity to an enemy unit. (Tree
-	 * 0)
+	 * (Tree 0)
+	 * Calculates the potential depending on proximity to an enemy unit.
 	 * 
-	 * @param x
-	 *            Unit's distance from an enemy unit.
+	 * @param x	Unit's distance from an enemy unit.
+	 * @param y Unit's own maximum shooting distance
+	 * @param z Unit's remaining hit points relative to the average of all own units
+	 * @param u X coordinate of vector (enemyPosition - ownPosition)
+	 * @param w Y coordinate of vector (enemyPosition - ownPosition)
 	 * @return The potential caused by the enemy unit.
 	 */
-	public double enemyPotential(double x, double ownMSD, double relativeHP, double u, double w) {
-		return tan(-0.25987056341509196) / (482.2377243640832 - x);
+	public double enemyPotential(double x, double y, double z, double u, double w) {
+		return exp(tanh(tanh(tanh(x + -453.0156915247012) / cube(x - -175.24203878943587))) - (sin(tan(exp(x - x))) - tanh(tanh(negexp(sin(tanh(tanh(tanh(x + -453.0156915247012) / cube(x - -175.24203878943587)))))))));
 	}
 	
 	/**
-	 * Calculates the potential depending on proximity to a map edge. (Tree 1)
+	 * (Tree 1)
+	 * Calculates the potential depending on proximity to a map edge. 
 	 * 
 	 * @param x
 	 *            Unit's distance from map edge
 	 * @return The potential caused by the map edge.
 	 */
 	public double mapEdgePotential(double x) {
-		return sin(negexp(0.2662283319407983 / x));
+		return square(0.11725951837008397);
 	}
 	
 	/**
-	 * Calculates the potential depending on proximity to an own unit. (Tree 2)
+	 * (Tree 2)
+	 * Calculates the potential depending on proximity to an own unit. 
 	 * 
 	 * @param x
 	 *            Unit's distance from an own unit.
 	 * @return The potential caused by the own unit.
 	 */
 	public double ownPotential(double x) {
-		return cos(tanh(iflte(cos(tanh(iflte(square(165.39910914669997), sin(square(165.39910914669997)), 0.3863582459429149 / 0.7612546338622452, cos(0.4521386034658581)))), sin(-408.3478155105742), 0.3863582459429149 / 0.7612546338622452, -408.3478155105742)));
+		return 0.1416434362861081;
 	}	
 
 	/**
-	 * Calculates the potential depending on proximity to an enemy unit when the
-	 * (Tree 3) own unit is on cooldown.
+	 * (Tree 3)
+	 * Calculates the potential depending on proximity to an enemy unit.
 	 * 
-	 * @param x
-	 *            Unit's distance from an enemy unit.
+	 * @param x	Unit's distance from an enemy unit.
+	 * @param y Unit's own maximum shooting distance
+	 * @param z Unit's remaining hit points relative to the average of all own units
+	 * @param u X coordinate of vector (enemyPosition - ownPosition)
+	 * @param w Y coordinate of vector (enemyPosition - ownPosition)
 	 * @return The potential caused by the enemy unit.
 	 */
-	public double enemyPotentialWhenOnCooldown(double x, double ownMSD,
-			double relativeHP, double u, double w) {
-		return square(w) * Math.log(-0.3329080324299645);
+	public double enemyPotentialWhenOnCooldown(double x, double y,
+			double z, double u, double w) {
+		return negexp(iflte(cos(sqrt(cube(cube(cos(0.1403215755394167))))), exp(z), cube(y), (((tanh(exp(w)) * (log(x) - (square((tanh(exp(w)) * (log(x) - (404.49523422431037 + -13.15162410727089))) / sqrt(cube(cos(0.1403215755394167)))) * square(tan(-320.6165247044389))))) / sqrt(cube(cos(0.1403215755394167)))) * (log(x) - (404.49523422431037 + -13.15162410727089))) / sqrt(cube(cos(0.1403215755394167)))));
 	}	
 
 	/**
