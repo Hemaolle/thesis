@@ -63,6 +63,12 @@ actual evolution.
 1. The bot AI client uses Java RMI to connect to the evolution. 
 First you have to run the rmiregistry.exe from your jdk bin folder. 
 Keep it running until you are finished with the bot.
+	Note: after Java 7 update 21 rmiregistry won't work like this.
+	One solution is to run it from inside ThesisAIProject\bin folder.
+	(Like this: 
+	E:\OneDrive\Gradu\Gradu git new\gradu-src\Java\ThesisAIProject\bin>
+	"E:\Program Files (x86)\Java\jre1.8.0_31\bin\rmiregistry"
+	)
 2. Run the Chaoslauncher - MultiInstance.exe in BWAPI 
 3.7.4/Chaoslauncher folder. (You might have to run it as an 
 administrator).
