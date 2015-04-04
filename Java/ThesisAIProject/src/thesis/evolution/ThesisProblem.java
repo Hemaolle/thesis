@@ -98,6 +98,33 @@ public class ThesisProblem extends GPProblem implements SimpleProblemForm,
 			}
 		}
 	}
+	
+	   /**  Called to reinitialize remote evaluation network contacts when the run is restarted from checkpoint.  By default does nothing. */
+    public void reinitializeContacts( EvolutionState state )
+    {
+    	bwClients = new ArrayList<RemoteBotInterface>();
+		System.out.println(state.evalthreads + " evalthreads");
+
+		ThesisProblemRMI starter = new ThesisProblemRMI();
+
+		BufferedReader buffer = new BufferedReader(new InputStreamReader(
+				System.in));
+		for (int i = 0; i < state.evalthreads; i++) {
+			System.out.println("Start client " + i);
+			System.out
+					.println("Press enter when the client has been started >");
+			try {
+				buffer.readLine();
+				bwClients.add(starter.connectClient(i + ""));
+				System.out.println("Connected to remote bot " + i);
+			} catch (Exception e) {
+				System.err.println("Something went wrong when waiting for \n"
+						+ "the user to start the client\n" + "(for stepping).");
+				e.printStackTrace();
+			}
+		}
+    }
+
 
 	/**
 	 * Evaluate the fitness of an individual. The fitness is the average of
