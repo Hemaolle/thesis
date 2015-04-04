@@ -68,7 +68,7 @@ public class Controller extends DefaultBWListener implements Runnable,
 	 * where %name% is the value of the name variable. For post
 	 * evolution evaluation.
 	 */
-	final static boolean WRITE_STATS_TO_FILE = false;
+	final static boolean WRITE_STATS_TO_FILE = true;
 	/**
 	 * The name of the bot. Will be displayed on the game window when the bot is
 	 * running and in the command window as the bot is started.
@@ -126,6 +126,15 @@ public class Controller extends DefaultBWListener implements Runnable,
 	private Visualizer visualizer;
 	/** Handles potential field calculations */
 	final private PotentialCalculator potentialCalculator;
+	// Moving this much past the point where we want to actually be.
+				// Unit acceleration and breaking causes it to lag behind the
+				// position of the move command given.
+	/** 
+	 * Moving this much past the point where we want to actually be.
+	 * Unit acceleration and breaking causes it to lag behind the
+	 * position of the move command given. 
+	 */
+	final static int MOVE_COMMAND_OFFSET = 20;
 
 	/** The BWMirror. Makes communication with BWAPI possible. */
 	private Mirror mirror = new Mirror();
@@ -581,11 +590,8 @@ public class Controller extends DefaultBWListener implements Runnable,
 			}
 			moveTo = potentialCalculator.getHighestPotentialPosition(
 					u.getPosition(), moveDirection, MOVE_DISTANCE, u);
-
-			// Moving this much past the point where we want to actually be.
-			// Unit acceleration and breaking causes it to lag behind the
-			// position of the move command given.
-			u.move(offsetPosition(moveTo, moveDirection, 20), false);
+			
+			u.move(offsetPosition(moveTo, moveDirection, MOVE_COMMAND_OFFSET), false);
 		} finally {
 			visualizer.visualizeDestination(u, moveTo,
 					getHasAttackOrderBeenGiven(u) || getIsAttackInProgress(u));
