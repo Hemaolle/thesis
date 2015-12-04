@@ -6,11 +6,12 @@ import java.rmi.RemoteException;
 /**
  * The interface for a remote bot.
  * 
- * @author Oskari Lepp‰aho
+ * @author Oskari Lepp√§aho
  *
  */
 public interface RemoteBotInterface extends Remote {
-	public static final String SERVICE_NAME = "BotService";
+	public static final String SERVICE_NAME = "BotService";
+
 	/**
 	 * Gets the score of a single round of fighting.
 	 * 

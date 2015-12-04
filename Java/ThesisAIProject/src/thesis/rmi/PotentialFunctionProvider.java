@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
  * calculated in the locations nearest to the unit and the unit then moves in
  * direction of the highest potential next to it.
  * 
- * @author Oskari Lepp‰aho
+ * @author Oskari Lepp√§aho
  * 
  */
 public interface PotentialFunctionProvider extends Remote {

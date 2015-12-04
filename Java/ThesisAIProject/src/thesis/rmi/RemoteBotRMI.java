@@ -11,7 +11,7 @@ import thesis.bot.Controller;
  * line argument that will be the unique part of the name that can be used to
  * access the started bot.
  * 
- * @author Oskari Lepp‰aho
+ * @author Oskari Lepp√§aho
  * 
  */
 public class RemoteBotRMI extends RmiStarter {

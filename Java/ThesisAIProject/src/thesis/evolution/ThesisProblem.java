@@ -24,7 +24,7 @@ import thesis.rmi.RemoteBotInterface;
  * Different trees in the individuals are ment to calculate different potential
  * fields: Tree 0: Enemy units Tree 1: Map edges
  * 
- * @author Oskari Lepp‰aho
+ * @author Oskari Lepp√§aho
  * 
  */
 public class ThesisProblem extends GPProblem implements SimpleProblemForm,

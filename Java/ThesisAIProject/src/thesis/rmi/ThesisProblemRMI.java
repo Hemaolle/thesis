@@ -13,7 +13,7 @@ import test.TestPotentialFunctionProvider;
 /**
  * For testing the RMI connection.
  * 
- * @author Oskari Lepp‰aho
+ * @author Oskari Lepp√§aho
  */
 
 public class ThesisProblemRMI extends RmiStarter {

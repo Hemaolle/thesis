@@ -10,7 +10,7 @@ import bwta.*;
 /**
  * Handles the visualizations on screen during the gameplay for the AI client.
  * 
- * @author Oskari Lepp‰aho
+ * @author Oskari Lepp√§aho
  * 
  */
 public class Visualizer {

@@ -16,7 +16,7 @@ import bwta.BWTA;
  * 
  * The potential field can also be provided by an external component.
  * 
- * @author Oskari Lepp‰aho
+ * @author Oskari Lepp√§aho
  * 
  */
 public class PotentialCalculator {

@@ -5,7 +5,7 @@ import bwapi.Position;
 /**
  * Provides some vector math operations on bwapi Positions.
  * 
- * @author Oskari Lepp‰aho
+ * @author Oskari Lepp√§aho
  * 
  */
 public class PosUtils {
